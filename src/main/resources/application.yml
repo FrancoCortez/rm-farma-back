@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: rm-farma
+  datasource:
+    url: jdbc:mysql://localhost:3306/rm-farma
+    username: root
+    password: cencosud
+  jpa:
+    open-in-view: true
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
