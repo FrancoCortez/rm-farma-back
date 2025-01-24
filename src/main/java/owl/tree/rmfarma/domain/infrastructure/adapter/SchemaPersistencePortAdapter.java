@@ -25,9 +25,9 @@ public class SchemaPersistencePortAdapter implements SchemaPersistencePort {
 
     @Override
     public SchemaResourceDto findByCode(String code) {
-        if(code == null || code.isEmpty()) return null;
+        if (code == null || code.isEmpty()) return null;
         Schema schema = this.schemaRepository.findByCode(code).orElse(null);
-        if(schema == null) return null;
+        if (schema == null) return null;
         return this.schemaMapper.toSchemaResourceDto(schema);
     }
 }

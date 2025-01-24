@@ -8,8 +8,9 @@
         <version>3.4.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.example</groupId>
+    <groupId>owl.tree.rmfarma</groupId>
     <artifactId>rm-farma</artifactId>
+    <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>rm-farma</name>
     <description>rm-farma</description>
@@ -27,9 +28,14 @@
         <url/>
     </scm>
     <properties>
-        <java.version>19</java.version>
+        <java.version>21</java.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -52,6 +58,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>1.18.30</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -67,18 +74,15 @@
     </dependencies>
 
     <build>
+        <finalName>rm-farma</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>22</source>
-                    <target>22</target>
+                    <source>21</source>
+                    <target>21</target>
                     <annotationProcessorPaths>
-                        <!--                        <path>-->
-                        <!--                            <groupId>org.springframework.boot</groupId>-->
-                        <!--                            <artifactId>spring-boot-configuration-processor</artifactId>-->
-                        <!--                        </path>-->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok-mapstruct-binding</artifactId>
@@ -87,7 +91,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.24</version>
+                            <version>1.18.30</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>

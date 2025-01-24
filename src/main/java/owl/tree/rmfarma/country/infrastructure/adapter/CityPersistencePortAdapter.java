@@ -8,8 +8,6 @@ import owl.tree.rmfarma.country.infrastructure.entities.City;
 import owl.tree.rmfarma.country.infrastructure.mappers.CityMapper;
 import owl.tree.rmfarma.country.infrastructure.repository.CityRepository;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class CityPersistencePortAdapter implements CityPersistencePort {

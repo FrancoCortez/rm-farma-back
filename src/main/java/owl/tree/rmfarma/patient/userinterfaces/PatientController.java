@@ -8,6 +8,8 @@ import owl.tree.rmfarma.patient.application.patient.FindPatientUseCase;
 import owl.tree.rmfarma.patient.application.patient.data.PatientCreateResourceUseCaseDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/v1/patients")
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class PatientController {
     @GetMapping("identification/{identification}")
     public ResponseEntity<PatientResourceDto> getPatientByIdentification(@PathVariable String identification) {
         return ResponseEntity.ok(this.findPatientUseCase.getPatientByIdentification(identification));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PatientResourceDto>> findAll() {
+        return ResponseEntity.ok(this.findPatientUseCase.findAll());
     }
 }

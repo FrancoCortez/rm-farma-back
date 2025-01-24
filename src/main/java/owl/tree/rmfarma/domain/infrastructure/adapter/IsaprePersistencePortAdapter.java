@@ -25,8 +25,8 @@ public class IsaprePersistencePortAdapter implements IsaprePersistencePort {
     }
 
     @Override
-    public IsapreResourceDto findByCode(String code) {
-        if (code == null || code.isEmpty()) return null;
+    public IsapreResourceDto findByCode(Integer code) {
+        if (code == null) return null;
         Isapre isapre = this.isapreRepository.findByCode(code).orElse(null);
         if (isapre == null) return null;
         return this.isapreMapper.toIsapreResourceDto(isapre);

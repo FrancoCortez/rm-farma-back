@@ -8,6 +8,8 @@ import owl.tree.rmfarma.service.infrastructure.entities.Services;
 import owl.tree.rmfarma.service.infrastructure.mappers.ServicesMapper;
 import owl.tree.rmfarma.service.infrastructure.respository.ServicesRepository;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class ServicesPersistencePortAdapter implements ServicesPersistencePort {
@@ -18,7 +20,15 @@ public class ServicesPersistencePortAdapter implements ServicesPersistencePort {
     public ServiceResourceDto findByCode(String code) {
         if (code == null || code.isEmpty()) return null;
         Services services = this.servicesRepository.findByCode(code).orElse(null);
-        if(services == null) return null;
+        if (services == null) return null;
         return this.servicesMapper.toServiceResourceDto(services);
+    }
+
+    public List<ServiceResourceDto> findAll() {
+        return this.servicesRepository
+                .findAll()
+                .stream()
+                .map(this.servicesMapper::toServiceResourceDto)
+                .toList();
     }
 }

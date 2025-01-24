@@ -9,6 +9,8 @@ import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
 import owl.tree.rmfarma.patient.infrastructure.mappers.PatientMapper;
 import owl.tree.rmfarma.patient.infrastructure.repository.PatientRepository;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class PatientPersistencePortAdapter implements PatientPersistencePort {
@@ -20,10 +22,16 @@ public class PatientPersistencePortAdapter implements PatientPersistencePort {
         return patientMapper.toPatientResourceDto(patientRepository.save(patientMapper.toPatientEntity(patientCreateResourceDto)));
     }
 
-    @Override
     public PatientResourceDto findPatientByIdentification(String identification) {
         Patient patient = patientRepository.findByIdentification(identification);
-        if(patient == null) return null;
+        if (patient == null) return null;
         return patientMapper.toPatientResourceDto(patient);
+    }
+
+    public List<PatientResourceDto> findAll() {
+        return this.patientRepository.findAll()
+                .stream()
+                .map(patientMapper::toPatientResourceDto)
+                .toList();
     }
 }

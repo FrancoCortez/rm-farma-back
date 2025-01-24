@@ -25,9 +25,9 @@ public class ClinicPersistencePortAdapter implements ClinicPersistencePort {
     }
 
     public ClinicResourceDto findByCode(String code) {
-        if(code == null || code.isEmpty()) return null;
+        if (code == null || code.isEmpty()) return null;
         Clinic clinic = this.clinicRepository.findByCode(code).orElse(null);
-        if(clinic == null) return null;
+        if (clinic == null) return null;
         return this.clinicMapper.toClinicResourceDto(clinic);
     }
 }

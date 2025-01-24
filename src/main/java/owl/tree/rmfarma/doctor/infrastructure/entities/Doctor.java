@@ -2,7 +2,7 @@ package owl.tree.rmfarma.doctor.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
-import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
+import owl.tree.rmfarma.patient.infrastructure.entities.DiagnosisPatient;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -14,20 +14,22 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Table(indexes = {
-        @Index(name = "idx_doctor_rut", columnList = "rut")
+        @Index(name = "idx_doctor_rut", columnList = "rut"),
+        @Index(name = "idx_doctor_code", columnList = "code")
 })
 public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", length = 36) private String id;
-    @Column(name = "rut", unique = true, nullable = false, length = 30) private String rut;
-    @Column(name = "name", nullable = false, length = 50) private String name;
-    @Column(name = "last_name", nullable = false, length = 50) private String lastName;
-    @Column(name = "phone", length = 20) private String phone;
-    @Column(name = "email", length = 100) private String email;
-
+    @Column(name = "id", length = 36)
+    private String id;
+    @Column(name = "code", unique = true, nullable = false)
+    private Integer code;
+    @Column(name = "rut", length = 30)
+    private String rut;
+    @Column(name = "name", nullable = false, length = 100)
+    private String name;
     @OneToMany(mappedBy = "doctor", orphanRemoval = true)
-    private Set<Patient> patients = new LinkedHashSet<>();
+    private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 
 }

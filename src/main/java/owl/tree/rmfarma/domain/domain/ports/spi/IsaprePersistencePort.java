@@ -7,5 +7,5 @@ import java.util.List;
 public interface IsaprePersistencePort {
     List<IsapreResourceDto> findAll();
 
-    IsapreResourceDto findByCode(String code);
+    IsapreResourceDto findByCode(Integer code);
 }

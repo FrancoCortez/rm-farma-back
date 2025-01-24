@@ -25,7 +25,7 @@ public class DiagnosisPersistencePortAdapter implements DiagnosisPersistencePort
     }
 
     public DiagnosisResourceDto findByCode(String code) {
-        if(code == null || code.isEmpty()) return null;
+        if (code == null || code.isEmpty()) return null;
         Diagnosis diagnosis = this.diagnosisRepository.findByCode(code).orElse(null);
         if (diagnosis == null) return null;
         return this.diagnosisMapper.toDiagnosisResourceDto(diagnosis);

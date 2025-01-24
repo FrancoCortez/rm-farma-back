@@ -13,9 +13,9 @@ public class FindDoctorUseCase {
 
     private final DoctorServicePort doctorServicePort;
 
-    public DoctorResourceDto findByRut(String rut) {
-        return this.doctorServicePort.findByRut(rut);
-    }
+//    public DoctorResourceDto findByRut(String rut) {
+//        return this.doctorServicePort.findByRut(rut);
+//    }
 
     public List<DoctorResourceDto> findAll() {
         return this.doctorServicePort.findAll();

@@ -5,6 +5,8 @@ import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
 import owl.tree.rmfarma.patient.domain.ports.api.PatientServicePort;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class FindPatientUseCase {
@@ -12,5 +14,9 @@ public class FindPatientUseCase {
 
     public PatientResourceDto getPatientByIdentification(String identification) {
         return this.patientServicePort.findPatientByIdentification(identification);
+    }
+
+    public List<PatientResourceDto> findAll() {
+        return this.patientServicePort.findAll();
     }
 }

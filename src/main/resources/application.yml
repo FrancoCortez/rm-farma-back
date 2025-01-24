@@ -1,6 +1,17 @@
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   application:
     name: rm-farma
+  #  datasource:
+  #    url: jdbc:mysql://localhost:3306/magistral_farma
+  #    username: phpmyadmin
+  #    password: Cl1.m4r,.2023
   datasource:
     url: jdbc:mysql://localhost:3306/rm-farma
     username: root
@@ -9,7 +20,11 @@ spring:
     open-in-view: true
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
+server:
+  port: 8080
+  servlet:
+    context-path: /rm-farma

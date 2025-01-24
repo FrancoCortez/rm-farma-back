@@ -11,7 +11,5 @@ public class DoctorResourceDto {
     private String id;
     private String rut;
     private String name;
-    private String lastName;
-    private String phone;
-    private String email;
+    private Integer code;
 }

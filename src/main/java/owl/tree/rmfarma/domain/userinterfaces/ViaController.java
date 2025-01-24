@@ -11,7 +11,7 @@ import owl.tree.rmfarma.domain.domain.data.via.ViaResourceDto;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/via")
+@RequestMapping("api/v1/vias")
 @RequiredArgsConstructor
 public class ViaController {
     private final FindViaUseCase findViaUseCase;

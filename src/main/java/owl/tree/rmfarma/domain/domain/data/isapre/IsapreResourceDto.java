@@ -9,6 +9,6 @@ import lombok.*;
 @EqualsAndHashCode
 public class IsapreResourceDto {
     private String id;
-    private String code;
+    private Integer code;
     private String description;
 }

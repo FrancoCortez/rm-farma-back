@@ -12,6 +12,6 @@ public class CreatePatientUseCase {
     private final PatientServicePort patientServicePort;
 
     public PatientResourceDto createPatient(PatientCreateResourceUseCaseDto patientCreateResourceUseCaseDto) {
-        return patientServicePort.createPatient(patientCreateResourceUseCaseDto);
+        return patientServicePort.createPatientOrUpdate(patientCreateResourceUseCaseDto);
     }
 }

@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface ViaPersistencePort {
     List<ViaResourceDto> findAll();
+
+    ViaResourceDto findByCode(String code);
 }
