@@ -26,8 +26,8 @@ public class MasterOrderResourceDto {
     private String patientIdentification;
     private String doctorName;
     private String doctorRut;
-    private String clinicCode;
-    private String clinicName;
+    private String unitHospitalCode;
+    private String unitHospitalName;
     private Integer isapreCode;
     private String isapreName;
     private String diagnosisCode;

@@ -3,7 +3,6 @@ package owl.tree.rmfarma.patient.infrastructure.entities;
 import jakarta.persistence.*;
 import lombok.*;
 import owl.tree.rmfarma.doctor.infrastructure.entities.Doctor;
-import owl.tree.rmfarma.domain.infrastructure.entities.Clinic;
 import owl.tree.rmfarma.domain.infrastructure.entities.Diagnosis;
 import owl.tree.rmfarma.domain.infrastructure.entities.HospitalUnit;
 import owl.tree.rmfarma.domain.infrastructure.entities.Schema;
@@ -43,10 +42,6 @@ public class DiagnosisPatient {
     @ManyToOne
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
-
-    @ManyToOne
-    @JoinColumn(name = "clinic_id")
-    private Clinic clinic;
 
     @ManyToOne
     @JoinColumn(name = "schema_id")

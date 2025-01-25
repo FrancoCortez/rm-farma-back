@@ -16,7 +16,6 @@ public class DiagnosisPatientCreateResourceDto {
     private String doctor;
     private String services;
     private String diagnosis;
-    private String clinic;
     private String schema;
     private String hospitalUnit;
 }

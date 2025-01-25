@@ -11,7 +11,6 @@ public class DiagnosisPatientCreateResourceUseCaseDto {
     private String doctor;
     private Integer cycleNumber;
     private Integer cycleDay;
-    private String clinic;
     private String schema;
     private String diagnosis;
     private String services;

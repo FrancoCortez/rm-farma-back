@@ -4,11 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import owl.tree.rmfarma.doctor.domain.data.doctor.DoctorResourceDto;
 import owl.tree.rmfarma.doctor.domain.ports.spi.DoctorPersistencePort;
-import owl.tree.rmfarma.domain.domain.data.clinic.ClinicResourceDto;
 import owl.tree.rmfarma.domain.domain.data.diagnosis.DiagnosisResourceDto;
 import owl.tree.rmfarma.domain.domain.data.hospitalunit.HospitalUnitResourceDto;
 import owl.tree.rmfarma.domain.domain.data.schema.SchemaResourceDto;
-import owl.tree.rmfarma.domain.domain.ports.spi.ClinicPersistencePort;
 import owl.tree.rmfarma.domain.domain.ports.spi.DiagnosisPersistencePort;
 import owl.tree.rmfarma.domain.domain.ports.spi.HospitalUnitPersistencePort;
 import owl.tree.rmfarma.domain.domain.ports.spi.SchemaPersistencePort;
@@ -28,7 +26,6 @@ public class DiagnosisPatientServiceImpl implements DiagnosisPatientServicePort 
     private final DiagnosisPatientPersistencePort diagnosisPatientPersistencePort;
 
     private final DoctorPersistencePort doctorPersistencePort;
-    private final ClinicPersistencePort clinicPersistencePort;
     private final SchemaPersistencePort schemaPersistencePort;
     private final DiagnosisPersistencePort diagnosisPersistencePort;
     private final ServicesPersistencePort servicesPersistencePort;
@@ -45,8 +42,6 @@ public class DiagnosisPatientServiceImpl implements DiagnosisPatientServicePort 
                 .build();
         DoctorResourceDto doctorResource = doctorPersistencePort.findById(entry.getDoctor());
         if (doctorResource != null) resource.setDoctor(doctorResource.getId());
-        ClinicResourceDto clinicResource = clinicPersistencePort.findByCode(entry.getClinic());
-        if (clinicResource != null) resource.setClinic(clinicResource.getId());
         SchemaResourceDto schemaResource = schemaPersistencePort.findByCode(entry.getSchema());
         if (schemaResource != null) resource.setSchema(schemaResource.getId());
         DiagnosisResourceDto diagnosisResource = diagnosisPersistencePort.findByCode(entry.getDiagnosis());

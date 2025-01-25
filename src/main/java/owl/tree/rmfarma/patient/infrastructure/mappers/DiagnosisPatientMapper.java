@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import owl.tree.rmfarma.doctor.infrastructure.entities.Doctor;
 import owl.tree.rmfarma.doctor.infrastructure.mappers.DoctorMapper;
 import owl.tree.rmfarma.doctor.infrastructure.mappers.DoctorMapperImpl;
-import owl.tree.rmfarma.domain.infrastructure.entities.Clinic;
 import owl.tree.rmfarma.domain.infrastructure.entities.Diagnosis;
 import owl.tree.rmfarma.domain.infrastructure.entities.HospitalUnit;
 import owl.tree.rmfarma.domain.infrastructure.entities.Schema;
@@ -23,7 +22,6 @@ public interface DiagnosisPatientMapper {
     DoctorMapper doctorMapper = new DoctorMapperImpl();
     ServicesMapper servicesMapper = new ServicesMapperImpl();
     DiagnosisMapper diagnosisMapper = new DiagnosisMapperImpl();
-    ClinicMapper clinicMapper = new ClinicMapperImpl();
     SchemaMapper schemaMapper = new SchemaMapperImpl();
     HospitalUnitMapper hospitalUnitMapper = new HospitalUnitMapperImpl();
 
@@ -36,7 +34,6 @@ public interface DiagnosisPatientMapper {
                 .doctor((resource.getDoctor() != null && !resource.getDoctor().isEmpty()) ? Doctor.builder().id(resource.getDoctor()).build() : null)
                 .services((resource.getServices() != null && !resource.getServices().isEmpty()) ? Services.builder().id(resource.getServices()).build() : null)
                 .diagnosis((resource.getDiagnosis() != null && !resource.getDiagnosis().isEmpty()) ? Diagnosis.builder().id(resource.getDiagnosis()).build() : null)
-                .clinic((resource.getClinic() != null && !resource.getClinic().isEmpty()) ? Clinic.builder().id(resource.getClinic()).build() : null)
                 .schema((resource.getSchema() != null && !resource.getSchema().isEmpty()) ? Schema.builder().id(resource.getSchema()).build() : null)
                 .hospitalUnit((resource.getHospitalUnit() != null && !resource.getHospitalUnit().isEmpty()) ? HospitalUnit.builder().id(resource.getHospitalUnit()).build() : null)
                 .build();
@@ -57,7 +54,6 @@ public interface DiagnosisPatientMapper {
             resource.setServices(servicesMapper.toServiceResourceDto(entity.getServices()));
         if (entity.getDiagnosis() != null)
             resource.setDiagnosis(diagnosisMapper.toDiagnosisResourceDto(entity.getDiagnosis()));
-        if (entity.getClinic() != null) resource.setClinic(clinicMapper.toClinicResourceDto(entity.getClinic()));
         if (entity.getHospitalUnit() != null)
             resource.setHospitalUnit(hospitalUnitMapper.toHospitalUnitResourceDto(entity.getHospitalUnit()));
         return resource;

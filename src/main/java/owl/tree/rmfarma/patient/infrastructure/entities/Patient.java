@@ -25,9 +25,9 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", length = 36)
     private String id;
-    @Column(name = "rut", unique = true, nullable = false, length = 30)
+    @Column(name = "rut", nullable = false, length = 30)
     private String rut;
-    @Column(name = "identification", unique = true, nullable = false, length = 30)
+    @Column(name = "identification", nullable = false, length = 30)
     private String identification;
     @Column(name = "name", nullable = false, length = 50)
     private String name;

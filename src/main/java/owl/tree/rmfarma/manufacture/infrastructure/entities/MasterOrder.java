@@ -41,10 +41,10 @@ public class MasterOrder {
     private String doctorName;
     @Column(name = "doctor_rut", length = 12)
     private String doctorRut;
-    @Column(name = "clinic_code", length = 30)
-    private String clinicCode;
-    @Column(name = "clinic_name", length = 50)
-    private String clinicName;
+    @Column(name = "unit_hospital_code", length = 30)
+    private String unitHospitalCode;
+    @Column(name = "unit_name_name", length = 50)
+    private String unitHospitalName;
     @Column(name = "isapre_code", length = 10)
     private Integer isapreCode;
     @Column(name = "isapre_name", length = 100)

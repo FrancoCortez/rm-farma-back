@@ -86,14 +86,14 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
                 .isapreName(patientResourceDto.getIsapre().getDescription())
                 .doctorName(response.getDiagnosisPatient().getDoctor().getName())
                 .doctorRut(response.getDiagnosisPatient().getDoctor().getRut())
-                .clinicCode(response.getDiagnosisPatient().getClinic().getCode())
-                .clinicName(response.getDiagnosisPatient().getClinic().getDescription())
                 .diagnosisCode(response.getDiagnosisPatient().getDiagnosis().getCode())
                 .diagnosisName(response.getDiagnosisPatient().getDiagnosis().getDescription())
                 .cycleNumber(response.getCycleNumber())
                 .cycleDay(response.getCycleDay())
                 .schemaCode(response.getDiagnosisPatient().getSchema().getCode())
                 .schemaName(response.getDiagnosisPatient().getSchema().getDescription())
+                .unitHospitalCode(response.getDiagnosisPatient().getHospitalUnit().getCode())
+                .unitHospitalName(response.getDiagnosisPatient().getHospitalUnit().getDescription())
                 .status(response.getStatus())
                 .build();
     }
