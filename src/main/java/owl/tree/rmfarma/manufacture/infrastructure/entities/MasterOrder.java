@@ -33,13 +33,13 @@ public class MasterOrder {
     private String patientName;
     @Column(name = "patient_last_name", nullable = false, length = 50)
     private String patientLastName;
-    @Column(name = "patient_rut", nullable = false, length = 12)
+    @Column(name = "patient_rut", nullable = false, length = 30)
     private String patientRut;
     @Column(name = "patient_identification", nullable = false, length = 30)
     private String patientIdentification;
     @Column(name = "doctor_name",  length = 50)
     private String doctorName;
-    @Column(name = "doctor_rut", length = 12)
+    @Column(name = "doctor_rut", length = 30)
     private String doctorRut;
     @Column(name = "unit_hospital_code", length = 30)
     private String unitHospitalCode;
