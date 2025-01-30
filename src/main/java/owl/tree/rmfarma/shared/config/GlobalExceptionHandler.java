@@ -1,5 +1,6 @@
 package owl.tree.rmfarma.shared.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,6 +12,7 @@ import owl.tree.rmfarma.shared.exception.data.ErrorResponse;
 import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
@@ -26,13 +28,13 @@ public class GlobalExceptionHandler {
         error.addValidationError(ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
-        ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "We are sorry, an internal error has occurred", request.getDescription(false));
-        error.addValidationError(ex.getMessage());
-        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<Object> handleException(Exception ex, WebRequest request) {
+//        ErrorResponse error = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR, "We are sorry, an internal error has occurred", request.getDescription(false));
+//        error.addValidationError(ex.getMessage());
+//        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Object> handleNotFoundException(NotFoundException ex, WebRequest request) {

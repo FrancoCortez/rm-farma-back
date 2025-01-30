@@ -24,5 +24,7 @@ spring:
     properties:
       hibernate:
         format_sql: false
-server:
-  port: 8080
+#server:
+#  port: 8080
+#  servlet:
+#    context-path: /rm-farma
