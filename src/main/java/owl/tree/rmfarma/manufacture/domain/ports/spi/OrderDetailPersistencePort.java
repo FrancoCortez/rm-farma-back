@@ -4,10 +4,11 @@ import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportD
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 public interface OrderDetailPersistencePort {
 
     OrderDetailResourceDto create(OrderDetailCreateResourceDto orderDetailCreateResourceDto);
-    List<CustomReportDTO> getCustomReport();
+    List<CustomReportDTO> getCustomReport(OffsetDateTime startDate, OffsetDateTime endDate);
 }

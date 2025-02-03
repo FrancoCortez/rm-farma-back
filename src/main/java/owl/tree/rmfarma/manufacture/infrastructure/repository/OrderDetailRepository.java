@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportDTO;
 import owl.tree.rmfarma.manufacture.infrastructure.entities.OrderDetail;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Repository
@@ -40,6 +41,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
             "FROM order_detail od " +
             "INNER JOIN master_order mo ON od.master_order_id = mo.id " +
             "INNER JOIN commercial_order_detail cod ON od.id = cod.order_detail_id " +
+            "WHERE od.production_date BETWEEN :startDate AND :endDate " +
             "UNION ALL " +
             "SELECT od.master_record AS masterRecord, " +
             "od.production_date AS productionDate, " +
@@ -70,6 +72,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
             "FROM order_detail od " +
             "INNER JOIN master_order mo ON od.master_order_id = mo.id " +
             "INNER JOIN complement c ON od.complement_id = c.id " +
+            "WHERE od.production_date BETWEEN :startDate AND :endDate " +
             "ORDER BY masterRecord DESC", nativeQuery = true)
-    List<CustomReportDTO> getCustomReport();
+    List<CustomReportDTO> getCustomReport(OffsetDateTime startDate, OffsetDateTime endDate);
 }

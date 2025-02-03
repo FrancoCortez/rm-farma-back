@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportDTO;
 import owl.tree.rmfarma.manufacture.domain.ports.api.OrderDetailServicePort;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Component
@@ -12,7 +13,7 @@ import java.util.List;
 public class ReportOrderDetailUseCase {
     private final OrderDetailServicePort orderDetailServicePort;
 
-    public List<CustomReportDTO> customReport() {
-        return orderDetailServicePort.getCustomReport();
+    public List<CustomReportDTO> customReport(OffsetDateTime startDate, OffsetDateTime endDate) {
+        return orderDetailServicePort.getCustomReport(startDate, endDate);
     }
 }

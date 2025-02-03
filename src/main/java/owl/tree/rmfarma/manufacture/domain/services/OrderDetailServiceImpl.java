@@ -6,6 +6,7 @@ import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportD
 import owl.tree.rmfarma.manufacture.domain.ports.api.OrderDetailServicePort;
 import owl.tree.rmfarma.manufacture.domain.ports.spi.OrderDetailPersistencePort;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Service
@@ -15,7 +16,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
     private final OrderDetailPersistencePort orderDetailPersistencePort;
 
 
-    public List<CustomReportDTO> getCustomReport() {
-        return this.orderDetailPersistencePort.getCustomReport();
+    public List<CustomReportDTO> getCustomReport(OffsetDateTime startDate, OffsetDateTime endDate) {
+        return this.orderDetailPersistencePort.getCustomReport(startDate, endDate);
     }
 }

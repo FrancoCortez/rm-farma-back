@@ -9,6 +9,7 @@ import owl.tree.rmfarma.manufacture.domain.ports.spi.OrderDetailPersistencePort;
 import owl.tree.rmfarma.manufacture.infrastructure.mappers.OrderDetailMapper;
 import owl.tree.rmfarma.manufacture.infrastructure.repository.OrderDetailRepository;
 
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Component
@@ -21,7 +22,7 @@ public class OrderDetailPersistencePortAdapter implements OrderDetailPersistence
         return this.orderDetailMapper.toOrderDetailResourceDto(this.orderDetailRepository.save(this.orderDetailMapper.toOrderDetailEntity(orderDetailCreateResourceDto)));
     }
 
-    public List<CustomReportDTO> getCustomReport() {
-        return this.orderDetailRepository.getCustomReport();
+    public List<CustomReportDTO> getCustomReport(OffsetDateTime startDate, OffsetDateTime endDate) {
+        return this.orderDetailRepository.getCustomReport(startDate, endDate);
     }
 }
