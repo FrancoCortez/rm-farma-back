@@ -25,7 +25,7 @@ public class Diagnosis {
     @Column(name = "grp_group", length = 30)
     private String grpGroup;
 
-    @OneToMany(mappedBy = "diagnosis", orphanRemoval = true)
+    @OneToMany(mappedBy = "diagnosis")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 
 }

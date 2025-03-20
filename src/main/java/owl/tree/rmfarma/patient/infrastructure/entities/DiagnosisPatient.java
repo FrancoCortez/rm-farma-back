@@ -55,7 +55,7 @@ public class DiagnosisPatient {
     @JoinColumn(name = "patient_id")
     private Patient patient;
 
-    @OneToMany(mappedBy = "diagnosisPatient", orphanRemoval = true)
+    @OneToMany(mappedBy = "diagnosisPatient")
     private Set<DiagnosisOrderStage> diagnosisOrderStages = new LinkedHashSet<>();
 
 }

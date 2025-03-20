@@ -23,7 +23,7 @@ public class Schema {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "schema", orphanRemoval = true)
+    @OneToMany(mappedBy = "schema")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 
 }

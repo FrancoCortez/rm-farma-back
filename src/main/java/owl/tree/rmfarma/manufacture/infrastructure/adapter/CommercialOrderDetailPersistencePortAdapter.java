@@ -18,4 +18,8 @@ public class CommercialOrderDetailPersistencePortAdapter implements CommercialOr
     public CommercialOrderDetailResourceDto save(CommercialOrderDetailCreateResourceDto commercialOrderDetail) {
         return this.commercialOrderDetailMapper.toResourceDto(this.commercialOrderDetailRepository.save(this.commercialOrderDetailMapper.toCommercialOrderDetailEntity(commercialOrderDetail)));
     }
+
+    public void deleteByOrderDetail(String orderDetail) {
+        this.commercialOrderDetailRepository.deleteByOrderDetailId(orderDetail);
+    }
 }

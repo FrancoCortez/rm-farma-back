@@ -23,7 +23,7 @@ public class DocumentType {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "documentType", orphanRemoval = true)
+    @OneToMany(mappedBy = "documentType")
     private Set<MasterOrder> masterOrders = new LinkedHashSet<>();
 
 }

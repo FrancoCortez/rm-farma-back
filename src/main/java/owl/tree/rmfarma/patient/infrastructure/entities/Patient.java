@@ -35,15 +35,15 @@ public class Patient {
     private String lastName;
     @Column(name = "type", nullable = false, length = 50)
     private String type;
-    @OneToMany(mappedBy = "patient", orphanRemoval = true)
+    @OneToMany(mappedBy = "patient")
     private Set<MasterOrder> masterOrders = new LinkedHashSet<>();
     @ManyToOne
     @JoinColumn(name = "isapre_id")
     private Isapre isapre;
-    @OneToMany(mappedBy = "patient", orphanRemoval = true)
+    @OneToMany(mappedBy = "patient")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "patient", orphanRemoval = true)
+    @OneToMany(mappedBy = "patient")
     private Set<DiagnosisOrderStage> diagnosisOrderStages = new LinkedHashSet<>();
 
 }

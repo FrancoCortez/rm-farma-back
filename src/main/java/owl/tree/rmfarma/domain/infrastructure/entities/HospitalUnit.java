@@ -23,6 +23,6 @@ public class HospitalUnit {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "hospitalUnit", orphanRemoval = true)
+    @OneToMany(mappedBy = "hospitalUnit")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 }

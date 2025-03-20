@@ -7,10 +7,13 @@ import owl.tree.rmfarma.domain.infrastructure.mappers.ViaMapper;
 import owl.tree.rmfarma.domain.infrastructure.mappers.ViaMapperImpl;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailUpdateResourceDto;
 import owl.tree.rmfarma.manufacture.infrastructure.entities.MasterOrder;
 import owl.tree.rmfarma.manufacture.infrastructure.entities.OrderDetail;
 import owl.tree.rmfarma.product.infrastructure.entities.Complement;
 import owl.tree.rmfarma.product.infrastructure.entities.Product;
+import owl.tree.rmfarma.product.infrastructure.mappers.ComplementMapper;
+import owl.tree.rmfarma.product.infrastructure.mappers.ComplementMapperImpl;
 
 import java.util.stream.Collectors;
 
@@ -18,6 +21,7 @@ import java.util.stream.Collectors;
 public interface OrderDetailMapper {
     ViaMapper viaMapper = new ViaMapperImpl();
     CommercialOrderDetailMapper commercialOrderDetailMapper = new CommercialOrderDetailMapperImpl();
+    ComplementMapper complementMapper = new ComplementMapperImpl();
 
     default OrderDetailResourceDto toOrderDetailResourceDto(OrderDetail entity) {
         if (entity == null) return null;
@@ -27,7 +31,10 @@ public interface OrderDetailMapper {
             resource.setVia(viaMapper.toViaResourceDto(entity.getVia()));
         }
         if(entity.getCommercialOrderDetails() != null) {
-            resource.setCommercialOrderDetails(entity.getCommercialOrderDetails().stream().map(commercialOrderDetailMapper::toResourceDto).collect(Collectors.toSet()));
+            resource.setCommercialOrderDetails(entity.getCommercialOrderDetails().stream().map(commercialOrderDetailMapper::toResourceDto).collect(Collectors.toList()));
+        }
+        if(entity.getComplement() != null) {
+            resource.setComplement(complementMapper.toComplementResourceDto(entity.getComplement()));
         }
         return resource;
     }
@@ -37,6 +44,28 @@ public interface OrderDetailMapper {
         OrderDetail entity = new OrderDetail();
         BeanUtils.copyProperties(resource, entity);
         entity.setQuantity(resource.getQuantity());
+        entity.setPharmaceuticalChemist("Pamela Figari");
+        if (resource.getProduct() != null && !resource.getProduct().isEmpty()) {
+            entity.setProduct(Product.builder().id(resource.getProduct()).build());
+        }
+        if (resource.getVia() != null && !resource.getVia().isEmpty()) {
+            entity.setVia(Via.builder().id(resource.getVia()).build());
+        }
+        if (resource.getMasterOrder() != null && !resource.getMasterOrder().isEmpty()) {
+            entity.setMasterOrder(MasterOrder.builder().id(resource.getMasterOrder()).build());
+        }
+        if (resource.getComplement() != null && !resource.getComplement().isEmpty()) {
+            entity.setComplement(Complement.builder().id(resource.getComplement()).build());
+        }
+        return entity;
+    }
+
+    default OrderDetail toOrderDetailEntityUpdate(OrderDetailUpdateResourceDto resource) {
+        if (resource == null) return null;
+        OrderDetail entity = new OrderDetail();
+        BeanUtils.copyProperties(resource, entity);
+        entity.setQuantity(resource.getQuantity());
+        entity.setPharmaceuticalChemist("Pamela Figari");
         if (resource.getProduct() != null && !resource.getProduct().isEmpty()) {
             entity.setProduct(Product.builder().id(resource.getProduct()).build());
         }

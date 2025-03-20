@@ -4,10 +4,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportDTO;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.ResumeReportDto;
 import owl.tree.rmfarma.manufacture.infrastructure.entities.OrderDetail;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderDetailRepository extends JpaRepository<OrderDetail, String> {
@@ -36,7 +39,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
             "0 AS volumeTotal, " +
             "od.via_code AS viaCode, " +
             "od.via_description AS viaDescription, " +
-            "'QF' AS qf, " +
+            "od.pharmaceutical_chemist AS qf, " +
             "0 AS guia " +
             "FROM order_detail od " +
             "INNER JOIN master_order mo ON od.master_order_id = mo.id " +
@@ -53,7 +56,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
             "c.code AS code, " +
             "c.description AS description, " +
             "1 AS quantity, " +
-            "CONCAT(od.quantity, ' ', od.unit_metric) AS quantityReal, " +
+            "'' AS quantityReal, " +
             "'' AS laboratory, " +
             "'' AS batch, " +
             "mo.isapre_code AS isapreCode, " +
@@ -67,7 +70,7 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
             "od.volume_total AS volumeTotal, " +
             "od.via_code AS viaCode, " +
             "od.via_description AS viaDescription, " +
-            "'QF' AS qf, " +
+            "od.pharmaceutical_chemist AS qf, " +
             "0 AS guia " +
             "FROM order_detail od " +
             "INNER JOIN master_order mo ON od.master_order_id = mo.id " +
@@ -75,4 +78,28 @@ public interface OrderDetailRepository extends JpaRepository<OrderDetail, String
             "WHERE od.production_date BETWEEN :startDate AND :endDate " +
             "ORDER BY masterRecord DESC", nativeQuery = true)
     List<CustomReportDTO> getCustomReport(OffsetDateTime startDate, OffsetDateTime endDate);
+
+    Optional<OrderDetail> findByMasterRecord(String masterRecord);
+
+    @Query(value = """
+                    SELECT mo.patient_rut       AS rut,
+                           mo.schema_name       AS schemaName,
+                           mo.unit_name_name    AS unitHospitalName,
+                           mo.doctor_name       AS doctorName,
+                           od.master_record     AS masterRecord,
+                           mo.patient_last_name AS lastName,
+                           mo.patient_name      AS name,
+                           od.production_date   AS productionDate,
+                           od.observation       AS observation,
+                           CONCAT(od.product_name, ' ', od.quantity, ' ', unit_metric, ' + ', od.complement_name, ' ', od.volume_total , ' ml') AS productName,
+                           mo.cycle_number      AS cycleNumber,
+                           mo.cycle_day         AS cycleDay,
+                           0 AS ov,
+                           'N/A' AS trainer
+                    FROM master_order mo
+                    INNER JOIN order_detail od ON mo.id = od.master_order_id
+                    WHERE od.production_date BETWEEN :startDate AND :endDate
+                    ORDER BY masterRecord DESC
+            """, nativeQuery = true)
+    List<ResumeReportDto> getResumeReport(OffsetDateTime startDate, OffsetDateTime endDate);
 }

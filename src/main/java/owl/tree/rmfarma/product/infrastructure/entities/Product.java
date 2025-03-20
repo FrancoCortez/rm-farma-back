@@ -25,7 +25,7 @@ public class Product {
 //    @Column(name = "laboratory", nullable = false, length = 50)
 //    private String laboratory;
 
-    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    @OneToMany(mappedBy = "product")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
 }

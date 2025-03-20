@@ -29,7 +29,7 @@ public class Doctor {
     private String rut;
     @Column(name = "name", nullable = false, length = 100)
     private String name;
-    @OneToMany(mappedBy = "doctor", orphanRemoval = true)
+    @OneToMany(mappedBy = "doctor")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 
 }

@@ -2,6 +2,7 @@ package owl.tree.rmfarma.patient.domain.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import owl.tree.rmfarma.doctor.domain.data.doctor.DoctorResourceDto;
 import owl.tree.rmfarma.doctor.domain.ports.spi.DoctorPersistencePort;
 import owl.tree.rmfarma.domain.domain.data.diagnosis.DiagnosisResourceDto;
@@ -32,6 +33,7 @@ public class DiagnosisPatientServiceImpl implements DiagnosisPatientServicePort 
     private final HospitalUnitPersistencePort hospitalUnitPersistencePort;
 
     public DiagnosisPatientResourceDto createDiagnosisPatient(DiagnosisPatientCreateResourceUseCaseDto entry, PatientResourceDto patient) {
+
         if (patient.getIdentification() == null || patient.getIdentification().isEmpty())
             throw new IsEmptyException("Identification", "Patient");
         DiagnosisPatientCreateResourceDto resource = DiagnosisPatientCreateResourceDto.builder()
@@ -50,6 +52,7 @@ public class DiagnosisPatientServiceImpl implements DiagnosisPatientServicePort 
         if (serviceResource != null) resource.setServices(serviceResource.getId());
         HospitalUnitResourceDto hospitalUnitResource = hospitalUnitPersistencePort.findByCode(entry.getHospitalUnit());
         if (hospitalUnitResource != null) resource.setHospitalUnit(hospitalUnitResource.getId());
+        if(entry.getId() != null && !entry.getId().isEmpty()) resource.setId(entry.getId());
         return diagnosisPatientPersistencePort.createDiagnosisPatient(resource);
     }
 }

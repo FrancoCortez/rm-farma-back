@@ -23,7 +23,7 @@ public class Isapre {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "isapre", orphanRemoval = true)
+    @OneToMany(mappedBy = "isapre")
     private Set<Patient> patients = new LinkedHashSet<>();
 
 //

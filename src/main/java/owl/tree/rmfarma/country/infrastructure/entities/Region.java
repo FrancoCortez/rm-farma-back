@@ -24,7 +24,7 @@ public class Region {
     @Column(name = "code", nullable = false, unique = true, length = 50)
     private String code;
 
-    @OneToMany(mappedBy = "region", orphanRemoval = true)
+    @OneToMany(mappedBy = "region")
     private Set<Province> provinces = new LinkedHashSet<>();
 
 }

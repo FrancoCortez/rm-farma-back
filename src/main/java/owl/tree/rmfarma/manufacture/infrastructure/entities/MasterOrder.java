@@ -80,7 +80,7 @@ public class MasterOrder {
     @JoinColumn(name = "document_type_id")
     private DocumentType documentType;
 
-    @OneToMany(mappedBy = "masterOrder", orphanRemoval = true)
+    @OneToMany(mappedBy = "masterOrder")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
     @ManyToOne

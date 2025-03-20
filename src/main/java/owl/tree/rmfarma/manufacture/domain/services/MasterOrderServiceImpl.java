@@ -4,35 +4,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import owl.tree.rmfarma.domain.domain.data.via.ViaResourceDto;
-import owl.tree.rmfarma.domain.domain.ports.spi.ViaPersistencePort;
 import owl.tree.rmfarma.manufacture.application.masterorder.data.CommercialAddCreateResourceUseCaseDto;
 import owl.tree.rmfarma.manufacture.application.masterorder.data.MasterOrderCreateResourceUseCaseDto;
 import owl.tree.rmfarma.manufacture.domain.data.commercialorderdetail.CommercialOrderDetailCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.diagnosisorder.DiagnosisOrderStageResourceDto;
-import owl.tree.rmfarma.manufacture.domain.data.generateid.GeneratorIdResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorder.InternalMasterOrderCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorder.MasterOrderCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorder.MasterOrderResourceDto;
-import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
 import owl.tree.rmfarma.manufacture.domain.ports.api.MasterOrderServicePort;
+import owl.tree.rmfarma.manufacture.domain.ports.api.OrderDetailServicePort;
 import owl.tree.rmfarma.manufacture.domain.ports.spi.CommercialOrderDetailPersistencePort;
-import owl.tree.rmfarma.manufacture.domain.ports.spi.GeneratorIdPersistencePort;
 import owl.tree.rmfarma.manufacture.domain.ports.spi.MasterOrderPersistencePort;
-import owl.tree.rmfarma.manufacture.domain.ports.spi.OrderDetailPersistencePort;
-import owl.tree.rmfarma.manufacture.infrastructure.entities.CommercialOrderDetail;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
 import owl.tree.rmfarma.patient.domain.ports.spi.PatientPersistencePort;
 import owl.tree.rmfarma.product.domain.data.commercialproduct.CommercialProductResourceDto;
-import owl.tree.rmfarma.product.domain.data.complement.ComplementResourceDto;
-import owl.tree.rmfarma.product.domain.data.product.ProductResourceDto;
 import owl.tree.rmfarma.product.domain.ports.spi.CommercialProductPersistencePort;
-import owl.tree.rmfarma.product.domain.ports.spi.ComplementPersistencePort;
-import owl.tree.rmfarma.product.domain.ports.spi.ProductPersistencePort;
-import owl.tree.rmfarma.product.infrastructure.entities.CommercialProduct;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.List;
 
@@ -42,12 +30,8 @@ import java.util.List;
 public class MasterOrderServiceImpl implements MasterOrderServicePort {
 
     private final MasterOrderPersistencePort masterOrderPersistencePort;
-    private final OrderDetailPersistencePort orderDetailPersistencePort;
-    private final GeneratorIdPersistencePort generatorIdPersistencePort;
     private final PatientPersistencePort patientPersistencePort;
-    private final ViaPersistencePort viaPersistencePort;
-    private final ProductPersistencePort productPersistencePort;
-    private final ComplementPersistencePort complementPersistencePort;
+    private final OrderDetailServicePort orderDetailServicePort;
     private final CommercialProductPersistencePort commercialProductPersistencePort;
     private final CommercialOrderDetailPersistencePort commercialOrderDetailPersistencePort;
 
@@ -58,15 +42,14 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
     @Transactional
     public MasterOrderResourceDto create(MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto) {
         MasterOrderResourceDto resourceDto = this.masterOrderPersistencePort.findById(masterOrderCreateResourceUseCaseDto.getMaster());
-        OrderDetailCreateResourceDto orderDetailCreateResourceDto = this.generateOrderDetail(masterOrderCreateResourceUseCaseDto, resourceDto.getId(), this.generateID(LocalDate.now().getYear()));
-        OrderDetailResourceDto responseOrderDetail = this.orderDetailPersistencePort.create(orderDetailCreateResourceDto);
-        if(masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart() != null && !masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().isEmpty()) {
+        OrderDetailResourceDto responseOrderDetail = this.orderDetailServicePort.createOrderDetail(masterOrderCreateResourceUseCaseDto, resourceDto.getId());
+        if (masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart() != null && !masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().isEmpty()) {
             masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().forEach(commercialAdd -> this.generateCommercialDetail(responseOrderDetail, commercialAdd));
         }
         return resourceDto;
     }
 
-    public MasterOrderResourceDto createInternalProcess (InternalMasterOrderCreateResourceDto masterOrderCreateResourceDto, DiagnosisOrderStageResourceDto response) {
+    public MasterOrderResourceDto createInternalProcess(InternalMasterOrderCreateResourceDto masterOrderCreateResourceDto, DiagnosisOrderStageResourceDto response) {
         MasterOrderCreateResourceDto resource = this.generateInternalMasterOrder(masterOrderCreateResourceDto, response);
         MasterOrderResourceDto masterOrderResourceDto = this.masterOrderPersistencePort.create(resource);
         return this.masterOrderPersistencePort.findById(masterOrderResourceDto.getId());
@@ -74,7 +57,7 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
 
     private MasterOrderCreateResourceDto generateInternalMasterOrder(InternalMasterOrderCreateResourceDto masterOrderCreateResourceUseCaseDto, DiagnosisOrderStageResourceDto response) {
         PatientResourceDto patientResourceDto = this.patientPersistencePort.findPatientByIdentification(masterOrderCreateResourceUseCaseDto.getPatientIdentification());
-        return MasterOrderCreateResourceDto.builder()
+        MasterOrderCreateResourceDto create =  MasterOrderCreateResourceDto.builder()
                 .diagnosisOrderStage(response.getId())
                 .patient(patientResourceDto.getId())
                 .productionDate(masterOrderCreateResourceUseCaseDto.getProductionDate())
@@ -82,8 +65,8 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
                 .patientLastName(patientResourceDto.getLastName())
                 .patientRut(patientResourceDto.getRut())
                 .patientIdentification(patientResourceDto.getIdentification())
-                .isapreCode(patientResourceDto.getIsapre().getCode())
-                .isapreName(patientResourceDto.getIsapre().getDescription())
+//                .isapreCode(patientResourceDto.getIsapre().getCode())
+//                .isapreName(patientResourceDto.getIsapre().getDescription())
                 .doctorName(response.getDiagnosisPatient().getDoctor().getName())
                 .doctorRut(response.getDiagnosisPatient().getDoctor().getRut())
                 .diagnosisCode(response.getDiagnosisPatient().getDiagnosis().getCode())
@@ -96,63 +79,27 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
                 .unitHospitalName(response.getDiagnosisPatient().getHospitalUnit().getDescription())
                 .status(response.getStatus())
                 .build();
+        if(patientResourceDto.getIsapre() != null && patientResourceDto.getIsapre().getCode() != null){
+            create.setIsapreCode(patientResourceDto.getIsapre().getCode());
+            create.setIsapreName(patientResourceDto.getIsapre().getDescription());
+        }
+        return create;
     }
 
-    private OrderDetailCreateResourceDto generateOrderDetail(MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto, String masterOrderId, String masterRecord) {
 
-        OrderDetailCreateResourceDto detail = OrderDetailCreateResourceDto.builder()
-                .prot(masterOrderCreateResourceUseCaseDto.getDetails().getProt())
-                .condition(masterOrderCreateResourceUseCaseDto.getDetails().getCondition())
-                .administrationTime(masterOrderCreateResourceUseCaseDto.getDetails().getAdministrationTime())
-                .quantity(masterOrderCreateResourceUseCaseDto.getDetails().getDose())
-                .volumeTotal(masterOrderCreateResourceUseCaseDto.getDetails().getVolTotal())
-                .unitMetric(masterOrderCreateResourceUseCaseDto.getDetails().getUnitMetric())
-                .expirationDate(masterOrderCreateResourceUseCaseDto.getDetails().getExpirationDate())
-                .productionDate(masterOrderCreateResourceUseCaseDto.getDetails().getProductionDate())
-                .observation(masterOrderCreateResourceUseCaseDto.getDetails().getObservation())
-                .build();
-        ProductResourceDto productResourceDto = this.productPersistencePort.findByCode(masterOrderCreateResourceUseCaseDto.getDetails().getProductCode());
-        if (productResourceDto != null) {
-            detail.setProduct(productResourceDto.getId());
-            detail.setProductCode(productResourceDto.getCode());
-            detail.setProductLaboratory(productResourceDto.getLaboratory());
-            detail.setProductName(productResourceDto.getDescription());
-        }
-        ComplementResourceDto complementResourceDto = this.complementPersistencePort.findByCode(masterOrderCreateResourceUseCaseDto.getDetails().getComplementCode());
-        if (complementResourceDto != null) {
-            detail.setComplement(complementResourceDto.getId());
-            detail.setComplementCode(complementResourceDto.getCode());
-            detail.setComplementName(complementResourceDto.getDescription());
-        }
-        ViaResourceDto viaResourceDto = this.viaPersistencePort.findByCode(masterOrderCreateResourceUseCaseDto.getVia());
-        if(viaResourceDto != null) {
-            detail.setVia(viaResourceDto.getId());
-            detail.setViaCode(viaResourceDto.getCode());
-            detail.setViaDescription(viaResourceDto.getDescription());
-        }
-        detail.setMasterOrder(masterOrderId);
-        detail.setMasterRecord(masterRecord);
-        return detail;
-    }
-
-    private void generateCommercialDetail (OrderDetailResourceDto orderDetailResourceDto, CommercialAddCreateResourceUseCaseDto commercialAdd) {
+    private void generateCommercialDetail(OrderDetailResourceDto orderDetailResourceDto, CommercialAddCreateResourceUseCaseDto commercialAdd) {
         CommercialOrderDetailCreateResourceDto commercialOrderDetail = CommercialOrderDetailCreateResourceDto.builder()
                 .quantity(commercialAdd.getPart())
                 .batch(commercialAdd.getBatch())
                 .orderDetail(orderDetailResourceDto.getId())
                 .build();
         CommercialProductResourceDto commercialResponse = this.commercialProductPersistencePort.findByCode(commercialAdd.getCommercial());
-        if(commercialResponse != null) {
+        if (commercialResponse != null) {
             commercialOrderDetail.setCommercial(commercialResponse.getDescription());
             commercialOrderDetail.setCode(commercialResponse.getCode());
             commercialOrderDetail.setLaboratory(commercialResponse.getLaboratory());
             commercialOrderDetail.setCommercialProduct(commercialResponse.getId());
         }
         this.commercialOrderDetailPersistencePort.save(commercialOrderDetail);
-    }
-
-    private String generateID(int currentYear) {
-        GeneratorIdResourceDto generatorIdResourceDto = this.generatorIdPersistencePort.generateId(currentYear);
-        return generatorIdResourceDto.getCorrelative() + "/" + generatorIdResourceDto.getYear();
     }
 }

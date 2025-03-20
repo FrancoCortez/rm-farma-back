@@ -2,6 +2,7 @@ package owl.tree.rmfarma.patient.domain.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import owl.tree.rmfarma.domain.domain.data.isapre.IsapreResourceDto;
 import owl.tree.rmfarma.domain.domain.ports.spi.IsaprePersistencePort;
 import owl.tree.rmfarma.patient.application.patient.data.PatientCreateResourceUseCaseDto;
@@ -26,6 +27,7 @@ public class PatientServiceImpl implements PatientServicePort {
     private final IsaprePersistencePort isaprePersistencePort;
     private final DiagnosisPatientServicePort diagnosisPatientServicePort;
 
+    @Transactional
     public PatientResourceDto createPatientOrUpdate(PatientCreateResourceUseCaseDto patientCreateResourceUseCaseDto) {
         if (patientCreateResourceUseCaseDto.getIdentification() == null)
             throw new IsEmptyException("Identification", "Patient");
@@ -44,6 +46,7 @@ public class PatientServiceImpl implements PatientServicePort {
         if (patientResourceDto != null) patientCreateResourceDto.setId(patientResourceDto.getId());
         Set<DiagnosisPatientResourceDto> diagnosisResult = new HashSet<>();
         PatientResourceDto result = this.patientPersistencePort.createPatient(patientCreateResourceDto);
+        PatientResourceDto resultDebug = this.patientPersistencePort.findPatientByIdentification(patientCreateResourceUseCaseDto.getIdentification());
         if (patientCreateResourceUseCaseDto.getDiagnosisPatient() != null && !patientCreateResourceUseCaseDto.getDiagnosisPatient().isEmpty()) {
             patientCreateResourceUseCaseDto.getDiagnosisPatient().forEach(f -> {
                 diagnosisResult.add(this.diagnosisPatientServicePort.createDiagnosisPatient(f, result));

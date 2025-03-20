@@ -3,6 +3,7 @@ package owl.tree.rmfarma.manufacture.application.orderdetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportDTO;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.ResumeReportDto;
 import owl.tree.rmfarma.manufacture.domain.ports.api.OrderDetailServicePort;
 
 import java.time.OffsetDateTime;
@@ -15,5 +16,9 @@ public class ReportOrderDetailUseCase {
 
     public List<CustomReportDTO> customReport(OffsetDateTime startDate, OffsetDateTime endDate) {
         return orderDetailServicePort.getCustomReport(startDate, endDate);
+    }
+
+    public List<ResumeReportDto> resumeReport(OffsetDateTime startDate, OffsetDateTime endDate) {
+        return orderDetailServicePort.getResumeReport(startDate, endDate);
     }
 }

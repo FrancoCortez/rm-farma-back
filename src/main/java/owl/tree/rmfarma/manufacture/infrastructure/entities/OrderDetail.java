@@ -76,7 +76,7 @@ public class OrderDetail {
     @JoinColumn(name = "via_id")
     private Via via;
 
-    @OneToMany(mappedBy = "orderDetail", orphanRemoval = true)
+    @OneToMany(mappedBy = "orderDetail")
     private Set<CommercialOrderDetail> commercialOrderDetails = new LinkedHashSet<>();
 
 }

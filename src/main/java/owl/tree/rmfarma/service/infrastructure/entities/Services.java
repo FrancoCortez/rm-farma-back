@@ -24,7 +24,7 @@ public class Services {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "services", orphanRemoval = true)
+    @OneToMany(mappedBy = "services")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 
 }

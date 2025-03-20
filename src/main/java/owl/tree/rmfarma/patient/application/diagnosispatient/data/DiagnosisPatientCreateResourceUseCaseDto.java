@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class DiagnosisPatientCreateResourceUseCaseDto {
+    private String id;
     private String doctor;
     private Integer cycleNumber;
     private Integer cycleDay;

@@ -13,11 +13,9 @@ import java.util.Set;
 @Entity(name = "diagnosis_order_stage")
 @Table(name = "diagnosis_order_stage",
         indexes = {
-        @Index(name = "idx_status", columnList = "status"),
-        },
-        uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"patient_id", "diagnosis_patient_id", "cycle_number", "cycle_day"})
-})
+                @Index(name = "idx_status", columnList = "status"),
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,7 +25,8 @@ public class DiagnosisOrderStage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", length = 36) private String id;
+    @Column(name = "id", length = 36)
+    private String id;
     @Column(name = "identification_patient", nullable = false, length = 30)
     private String identificationPatient;
     @Column(name = "cycle_number", nullable = false)
@@ -50,7 +49,7 @@ public class DiagnosisOrderStage {
     @JoinColumn(name = "diagnosis_patient_id")
     private DiagnosisPatient diagnosisPatient;
 
-    @OneToMany(mappedBy = "diagnosisOrderStage", orphanRemoval = true)
+    @OneToMany(mappedBy = "diagnosisOrderStage")
     private Set<MasterOrder> masterOrders = new LinkedHashSet<>();
 
 }

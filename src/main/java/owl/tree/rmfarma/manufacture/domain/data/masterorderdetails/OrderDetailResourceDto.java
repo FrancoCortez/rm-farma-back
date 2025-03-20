@@ -3,8 +3,10 @@ package owl.tree.rmfarma.manufacture.domain.data.masterorderdetails;
 import lombok.*;
 import owl.tree.rmfarma.domain.domain.data.via.ViaResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.commercialorderdetail.CommercialOrderDetailResourceDto;
+import owl.tree.rmfarma.product.domain.data.complement.ComplementResourceDto;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -26,9 +28,9 @@ public class OrderDetailResourceDto {
     private String observation;
     private String complementName;
     private String complementCode;
-    private String complementPart;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
     private ViaResourceDto via;
-    private Set<CommercialOrderDetailResourceDto> commercialOrderDetails;
+    private ComplementResourceDto complement;
+    private List<CommercialOrderDetailResourceDto> commercialOrderDetails;
 }

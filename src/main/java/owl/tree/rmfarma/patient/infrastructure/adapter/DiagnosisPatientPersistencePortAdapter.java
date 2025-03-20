@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.patient.domain.data.diagnosispatient.DiagnosisPatientCreateResourceDto;
 import owl.tree.rmfarma.patient.domain.data.diagnosispatient.DiagnosisPatientResourceDto;
 import owl.tree.rmfarma.patient.domain.ports.spi.DiagnosisPatientPersistencePort;
+import owl.tree.rmfarma.patient.infrastructure.entities.DiagnosisPatient;
 import owl.tree.rmfarma.patient.infrastructure.mappers.DiagnosisPatientMapper;
 import owl.tree.rmfarma.patient.infrastructure.repository.DiagnosisPatientRepository;
 
@@ -16,7 +17,8 @@ public class DiagnosisPatientPersistencePortAdapter implements DiagnosisPatientP
 
 
     public DiagnosisPatientResourceDto createDiagnosisPatient(DiagnosisPatientCreateResourceDto resource) {
-        return this.diagnosisPatientMapper.toDiagnosisPatientResource(this.diagnosisPatientRepository.save(this.diagnosisPatientMapper.toDiagnosisPatientEntity(resource)));
+        DiagnosisPatient entity = this.diagnosisPatientMapper.toDiagnosisPatientEntity(resource);
+        return this.diagnosisPatientMapper.toDiagnosisPatientResource(this.diagnosisPatientRepository.saveAndFlush(entity));
     }
 
     @Override

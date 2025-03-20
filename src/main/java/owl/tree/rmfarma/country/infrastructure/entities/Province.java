@@ -29,7 +29,7 @@ public class Province {
     @JoinColumn(name = "region_id")
     private Region region;
 
-    @OneToMany(mappedBy = "province", orphanRemoval = true)
+    @OneToMany(mappedBy = "province")
     private Set<City> cities = new LinkedHashSet<>();
 
 }

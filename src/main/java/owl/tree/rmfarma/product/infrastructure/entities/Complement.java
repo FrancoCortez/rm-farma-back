@@ -24,7 +24,7 @@ public class Complement {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
-    @OneToMany(mappedBy = "complement", orphanRemoval = true)
+    @OneToMany(mappedBy = "complement")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
 }
