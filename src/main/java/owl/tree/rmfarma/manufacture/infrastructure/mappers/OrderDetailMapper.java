@@ -44,7 +44,7 @@ public interface OrderDetailMapper {
         OrderDetail entity = new OrderDetail();
         BeanUtils.copyProperties(resource, entity);
         entity.setQuantity(resource.getQuantity());
-        entity.setPharmaceuticalChemist("Pamela Figari");
+        entity.setPharmaceuticalChemist("Alicia González Yévenes");
         if (resource.getProduct() != null && !resource.getProduct().isEmpty()) {
             entity.setProduct(Product.builder().id(resource.getProduct()).build());
         }
@@ -65,7 +65,7 @@ public interface OrderDetailMapper {
         OrderDetail entity = new OrderDetail();
         BeanUtils.copyProperties(resource, entity);
         entity.setQuantity(resource.getQuantity());
-        entity.setPharmaceuticalChemist("Pamela Figari");
+        entity.setPharmaceuticalChemist("Alicia González Yévenes");
         if (resource.getProduct() != null && !resource.getProduct().isEmpty()) {
             entity.setProduct(Product.builder().id(resource.getProduct()).build());
         }

@@ -35,6 +35,7 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
     private final CommercialProductPersistencePort commercialProductPersistencePort;
     private final CommercialOrderDetailPersistencePort commercialOrderDetailPersistencePort;
 
+    @Transactional
     public List<MasterOrderResourceDto> findAll(OffsetDateTime searchDay, String searchIdentification) {
         return this.masterOrderPersistencePort.findAll(searchDay, searchIdentification);
     }
