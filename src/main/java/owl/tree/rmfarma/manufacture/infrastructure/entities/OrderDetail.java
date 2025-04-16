@@ -41,7 +41,7 @@ public class OrderDetail {
     private String viaDescription; // check
     @Column(name = "pharmaceutical_chemist",  length = 100)
     private String pharmaceuticalChemist;
-    @Column(name = "prot", length = 5)
+    @Column(name = "prot", length = 100)
     private String prot;
     @Column(name = "volume_total")
     private Integer volumeTotal;
