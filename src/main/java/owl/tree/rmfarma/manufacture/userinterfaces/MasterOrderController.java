@@ -29,6 +29,11 @@ public class MasterOrderController {
         return ResponseEntity.ok(this.findMasterOrderUseCase.findAll(searchDay, searchIdentification));
     }
 
+    @GetMapping("/find-history")
+    public ResponseEntity<List<MasterOrderResourceDto>> findHistory(@RequestParam(required = true) String identification, @RequestParam(required = true) String diagnosisId) {
+        return ResponseEntity.ok(this.findMasterOrderUseCase.findHistoryByPatientIdentification(identification, diagnosisId));
+    }
+
     @PostMapping
     public ResponseEntity<MasterOrderResourceDto> create(@RequestBody List<MasterOrderCreateResourceUseCaseDto> masterOrderCreateResourceUseCaseDto) {
         return ResponseEntity.ok(this.createMasterOrderUseCase.create(masterOrderCreateResourceUseCaseDto));

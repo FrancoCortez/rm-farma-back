@@ -41,6 +41,11 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
     }
 
     @Transactional
+    public List<MasterOrderResourceDto> findHistoryByPatientIdentification(String identification, String diagnosisId) {
+        return this.masterOrderPersistencePort.findHistoryByPatientIdentification(identification, diagnosisId);
+    }
+
+    @Transactional
     public MasterOrderResourceDto create(MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto) {
         MasterOrderResourceDto resourceDto = this.masterOrderPersistencePort.findById(masterOrderCreateResourceUseCaseDto.getMaster());
         OrderDetailResourceDto responseOrderDetail = this.orderDetailServicePort.createOrderDetail(masterOrderCreateResourceUseCaseDto, resourceDto.getId());

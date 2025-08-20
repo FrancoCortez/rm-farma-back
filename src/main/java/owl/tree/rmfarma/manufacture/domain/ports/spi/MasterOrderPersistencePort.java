@@ -12,4 +12,6 @@ public interface MasterOrderPersistencePort {
     MasterOrderResourceDto create(MasterOrderCreateResourceDto masterOrderCreateResourceDto);
 
     MasterOrderResourceDto findById(String id);
+
+    List<MasterOrderResourceDto> findHistoryByPatientIdentification(String identification, String diagnosisId);
 }

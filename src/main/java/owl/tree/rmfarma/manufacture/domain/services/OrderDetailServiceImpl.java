@@ -121,6 +121,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
                 .expirationDate(body.getDetails().getExpirationDate())
                 .productionDate(body.getDetails().getProductionDate())
                 .observation(body.getDetails().getObservation())
+                .concentration(body.getDetails().getConcentration())
                 .build();
         ProductResourceDto productResourceDto = this.productPersistencePort.findByCode(body.getDetails().getProductCode());
         if (productResourceDto != null) {
@@ -157,6 +158,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
                 .expirationDate(masterOrderCreateResourceUseCaseDto.getDetails().getExpirationDate())
                 .productionDate(masterOrderCreateResourceUseCaseDto.getDetails().getProductionDate())
                 .observation(masterOrderCreateResourceUseCaseDto.getDetails().getObservation())
+                .concentration(masterOrderCreateResourceUseCaseDto.getDetails().getConcentration())
                 .build();
         ProductResourceDto productResourceDto = this.productPersistencePort.findByCode(masterOrderCreateResourceUseCaseDto.getDetails().getProductCode());
         if (productResourceDto != null) {

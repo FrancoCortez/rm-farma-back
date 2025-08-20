@@ -2,7 +2,10 @@ package owl.tree.rmfarma.patient.infrastructure.repository;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import owl.tree.rmfarma.patient.domain.data.patient.PatientComboResourceDto;
 import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
 
 import java.util.List;
@@ -25,4 +28,13 @@ public interface PatientRepository extends JpaRepository<Patient, String> {
 
     @EntityGraph(attributePaths = {"diagnosisPatients"})
     List<Patient> findAll();
+
+    @Query("""
+                SELECT new owl.tree.rmfarma.patient.domain.data.patient.PatientComboResourceDto(
+                p.identification, concat(p.rut, ' || ', p.name, ' ', p.lastName)
+            )
+                        FROM patient p
+                        WHERE (:identification IS NULL OR :identification = '' OR p.identification LIKE %:identification%)
+            """)
+    List<PatientComboResourceDto> findPatientByIdentificationContaining(@Param("identification") String identification);
 }

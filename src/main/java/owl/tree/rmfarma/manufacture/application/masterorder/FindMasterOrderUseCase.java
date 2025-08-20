@@ -16,4 +16,8 @@ public class FindMasterOrderUseCase {
     public List<MasterOrderResourceDto> findAll(OffsetDateTime searchDay, String searchIdentification) {
         return this.masterOrderServicePort.findAll(searchDay, searchIdentification);
     }
+
+    public List<MasterOrderResourceDto> findHistoryByPatientIdentification(String identification,String diagnosisId) {
+        return this.masterOrderServicePort.findHistoryByPatientIdentification(identification, diagnosisId);
+    }
 }

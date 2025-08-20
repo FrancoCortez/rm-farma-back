@@ -2,6 +2,7 @@ package owl.tree.rmfarma.manufacture.infrastructure.adapter;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.manufacture.domain.data.masterorder.MasterOrderCreateResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorder.MasterOrderResourceDto;
@@ -30,6 +31,13 @@ public class MasterOrderPersistencePortAdapter implements MasterOrderPersistence
         } else {
             masterOrders = this.masterOrderRepository.findAllByProductionDateBetween(startOfDay, endOfDay);
         }
+        return masterOrders.stream()
+                .map(this.masterOrderMapper::toMasterResourceDto)
+                .toList();
+    }
+
+    public List<MasterOrderResourceDto> findHistoryByPatientIdentification(String identification, String diagnosisId) {
+        List<MasterOrder> masterOrders = this.masterOrderRepository.findTop10ByPatientIdentificationWithOrderDetailRMNotNull(identification,diagnosisId, PageRequest.of(0,10));
         return masterOrders.stream()
                 .map(this.masterOrderMapper::toMasterResourceDto)
                 .toList();

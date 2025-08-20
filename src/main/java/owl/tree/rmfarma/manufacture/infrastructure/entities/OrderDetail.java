@@ -58,6 +58,8 @@ public class OrderDetail {
     private String administrationTime;
     @Column(name = "observation", length = 500)
     private String observation;
+    @Column(name = "concentration", length = 50)
+    private String concentration;
 
 
     @ManyToOne

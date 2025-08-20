@@ -31,6 +31,7 @@ public class OrderDetailUpdateResourceDto {
     private String condition;
     private String administrationTime;
     private String observation;
+    private String concentration;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
 }

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import owl.tree.rmfarma.patient.application.patient.CreatePatientUseCase;
 import owl.tree.rmfarma.patient.application.patient.FindPatientUseCase;
 import owl.tree.rmfarma.patient.application.patient.data.PatientCreateResourceUseCaseDto;
+import owl.tree.rmfarma.patient.domain.data.patient.PatientComboResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
 
 import java.util.List;
@@ -25,6 +26,11 @@ public class PatientController {
     @GetMapping("identification/{identification}")
     public ResponseEntity<PatientResourceDto> getPatientByIdentification(@PathVariable String identification) {
         return ResponseEntity.ok(this.findPatientUseCase.getPatientByIdentification(identification));
+    }
+
+    @GetMapping("debound")
+    public ResponseEntity<List<PatientComboResourceDto>> getPatientDebound(@RequestParam(required = false) String identification) {
+        return ResponseEntity.ok(this.findPatientUseCase.getPatientByIdentificationDebound(identification));
     }
 
     @GetMapping

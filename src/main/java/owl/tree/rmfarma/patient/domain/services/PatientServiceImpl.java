@@ -7,6 +7,7 @@ import owl.tree.rmfarma.domain.domain.data.isapre.IsapreResourceDto;
 import owl.tree.rmfarma.domain.domain.ports.spi.IsaprePersistencePort;
 import owl.tree.rmfarma.patient.application.patient.data.PatientCreateResourceUseCaseDto;
 import owl.tree.rmfarma.patient.domain.data.diagnosispatient.DiagnosisPatientResourceDto;
+import owl.tree.rmfarma.patient.domain.data.patient.PatientComboResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientCreateResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
 import owl.tree.rmfarma.patient.domain.ports.api.DiagnosisPatientServicePort;
@@ -67,5 +68,10 @@ public class PatientServiceImpl implements PatientServicePort {
     @Override
     public List<PatientResourceDto> findAll() {
         return this.patientPersistencePort.findAll();
+    }
+
+    @Override
+    public List<PatientComboResourceDto> findPatientByIdentificationDebound(String identification) {
+        return this.patientPersistencePort.findPatientByIdentificationDebound(identification);
     }
 }

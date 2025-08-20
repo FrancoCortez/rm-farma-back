@@ -23,5 +23,6 @@ public class MasterOrderDetailsCreateResourceUseCaseDto {
     private String observation;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
+    private String concentration;
     private List<CommercialAddCreateResourceUseCaseDto> commercialPart;
 }

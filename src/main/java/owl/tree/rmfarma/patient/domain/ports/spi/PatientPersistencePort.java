@@ -1,5 +1,6 @@
 package owl.tree.rmfarma.patient.domain.ports.spi;
 
+import owl.tree.rmfarma.patient.domain.data.patient.PatientComboResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientCreateResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
 
@@ -11,4 +12,6 @@ public interface PatientPersistencePort {
     PatientResourceDto findPatientByIdentification(String identification);
 
     List<PatientResourceDto> findAll();
+
+    List<PatientComboResourceDto> findPatientByIdentificationDebound(String identification);
 }

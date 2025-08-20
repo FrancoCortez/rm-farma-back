@@ -24,5 +24,6 @@ public class OrderDetailUpdateDetailResourceDto {
     private String condition;
     private String administrationTime;
     private String observation;
+    private String concentration;
     private List<CommercialPartUpdateResourceDto> commercialPart;
 }

@@ -24,8 +24,21 @@ public class CommercialProduct {
     private String description;
     @Column(name = "laboratory", nullable = false, length = 50)
     private String laboratory;
+    @Column(name = "concentration")
+    private Double concentration;
+    @Column(name = "concentration_unit", length = 20)
+    private String concentrationUnit;
+    @Column(name = "default_concentration", length = 30)
+    private String defaultConcentration;
 
     @OneToMany(mappedBy = "commercialProduct")
     private Set<CommercialOrderDetail> commercialOrderDetails = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "commercialProduct")
+    private Set<CommercialProductFactor> factors = new LinkedHashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
 }

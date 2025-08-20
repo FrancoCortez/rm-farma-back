@@ -28,4 +28,7 @@ public class Product {
     @OneToMany(mappedBy = "product")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
+    private Set<CommercialProduct> commercialProducts = new LinkedHashSet<>();
+
 }

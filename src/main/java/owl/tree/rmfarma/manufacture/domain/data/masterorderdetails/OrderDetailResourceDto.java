@@ -30,6 +30,7 @@ public class OrderDetailResourceDto {
     private String complementCode;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
+    private String concentration;
     private ViaResourceDto via;
     private ComplementResourceDto complement;
     private List<CommercialOrderDetailResourceDto> commercialOrderDetails;

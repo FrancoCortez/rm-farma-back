@@ -32,4 +32,5 @@ public class OrderDetailCreateResourceDto {
     private String observation;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
+    private String concentration;
 }

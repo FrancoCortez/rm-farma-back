@@ -32,6 +32,7 @@ public class DiagnosisPatientServiceImpl implements DiagnosisPatientServicePort 
     private final ServicesPersistencePort servicesPersistencePort;
     private final HospitalUnitPersistencePort hospitalUnitPersistencePort;
 
+    @Transactional
     public DiagnosisPatientResourceDto createDiagnosisPatient(DiagnosisPatientCreateResourceUseCaseDto entry, PatientResourceDto patient) {
 
         if (patient.getIdentification() == null || patient.getIdentification().isEmpty())
