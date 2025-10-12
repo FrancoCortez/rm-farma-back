@@ -8,9 +8,12 @@ import java.util.List;
 public interface OrderDetailPersistencePort {
 
     OrderDetailResourceDto create(OrderDetailCreateResourceDto orderDetailCreateResourceDto);
+
     List<CustomReportDTO> getCustomReport(OffsetDateTime startDate, OffsetDateTime endDate);
 
     OrderDetailResourceDto findByMasterRecord(String masterRecord);
+
+    List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate);
 
     OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateResourceDto orderUpdate);
 

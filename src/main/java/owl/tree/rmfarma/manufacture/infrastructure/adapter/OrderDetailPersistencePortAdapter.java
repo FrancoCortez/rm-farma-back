@@ -29,6 +29,10 @@ public class OrderDetailPersistencePortAdapter implements OrderDetailPersistence
         return this.orderDetailRepository.getResumeReport(startDate, endDate);
     }
 
+    public List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate) {
+        return this.orderDetailRepository.getConcentrationReport(startDate, endDate);
+    }
+
     public OrderDetailResourceDto findByMasterRecord(String masterRecord) {
         OrderDetail entity = this.orderDetailRepository.findByMasterRecord(masterRecord).orElse(null);
         if(entity == null) {

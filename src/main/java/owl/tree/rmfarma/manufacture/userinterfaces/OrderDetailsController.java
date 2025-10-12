@@ -5,10 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import owl.tree.rmfarma.manufacture.application.orderdetails.ReportOrderDetailUseCase;
 import owl.tree.rmfarma.manufacture.application.orderdetails.UpdateOrderDetailUseCase;
-import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportDTO;
-import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
-import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailUpdateFormResourceDto;
-import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.ResumeReportDto;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.*;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -31,6 +28,12 @@ public class OrderDetailsController {
     public ResponseEntity<List<ResumeReportDto>> getResumeReport(@RequestParam(required = false) OffsetDateTime startDate,
                                                                  @RequestParam(required = false) OffsetDateTime endDate) {
         return ResponseEntity.ok(reportOrderDetailUseCase.resumeReport(startDate, endDate));
+    }
+
+    @GetMapping("/generate/concentrate-report")
+    public ResponseEntity<List<ConcentrationReportDto>> getConcentrateReport(@RequestParam(required = false) OffsetDateTime startDate,
+                                                                             @RequestParam(required = false) OffsetDateTime endDate) {
+        return ResponseEntity.ok(reportOrderDetailUseCase.concentrationReport(startDate, endDate));
     }
 
     @PutMapping("/update")

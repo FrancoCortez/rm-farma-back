@@ -14,12 +14,12 @@ import java.util.Set;
 public class OrderDetailUpdateDetailResourceDto {
     private String productCode;
     private String via;
-    private Integer dose;
+    private Double dose;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
     private String unitMetric;
     private String complementCode;
-    private Integer volTotal;
+    private Double volTotal;
     private String prot;
     private String condition;
     private String administrationTime;

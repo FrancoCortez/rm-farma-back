@@ -31,7 +31,7 @@ public class CustomReportDTO {
     private Integer cycleNumber;
     private String schemaCode;
     private String schemaName;
-    private Long volumeTotal;
+    private Double volumeTotal;
     private String viaCode;
     private String viaDescription;
     private String qf; // Corregido a qf (minúscula)

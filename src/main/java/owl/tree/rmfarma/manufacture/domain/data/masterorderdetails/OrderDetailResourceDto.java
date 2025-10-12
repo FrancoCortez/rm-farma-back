@@ -19,9 +19,9 @@ public class OrderDetailResourceDto {
     private String masterRecord;
     private String productName;
     private String productCode;
-    private Integer quantity;
+    private Double quantity;
     private String unitMetric;
-    private Integer volumeTotal;
+    private Double volumeTotal;
     private String administrationTime;
     private String prot;
     private String condition;

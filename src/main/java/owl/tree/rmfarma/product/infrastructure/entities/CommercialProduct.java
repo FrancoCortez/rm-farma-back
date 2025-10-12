@@ -22,7 +22,7 @@ public class CommercialProduct {
     private String code;
     @Column(name = "description", nullable = false, length = 100)
     private String description;
-    @Column(name = "laboratory", nullable = false, length = 50)
+    @Column(name = "laboratory", length = 50)
     private String laboratory;
     @Column(name = "concentration")
     private Double concentration;

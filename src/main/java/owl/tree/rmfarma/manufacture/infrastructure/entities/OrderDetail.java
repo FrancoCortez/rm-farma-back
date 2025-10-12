@@ -30,7 +30,7 @@ public class OrderDetail {
     @Column(name = "product_laboratory", length = 50)
     private String productLaboratory; // check
     @Column(name = "quantity", nullable = false)
-    private Integer quantity; // check
+    private Double quantity; // check
     @Column(name = "complement_name", nullable = false, length = 50)
     private String complementName; // check
     @Column(name = "complement_code", nullable = false, length = 30)
@@ -44,7 +44,7 @@ public class OrderDetail {
     @Column(name = "prot", length = 100)
     private String prot;
     @Column(name = "volume_total")
-    private Integer volumeTotal;
+    private Double volumeTotal;
     @Column(name = "unit_metric", length = 10)
     private String unitMetric;
     @Column(name = "production_date")

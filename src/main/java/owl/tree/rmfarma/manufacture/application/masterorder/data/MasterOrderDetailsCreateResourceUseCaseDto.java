@@ -12,10 +12,10 @@ import java.util.List;
 @EqualsAndHashCode
 public class MasterOrderDetailsCreateResourceUseCaseDto {
     private String productCode;
-    private Integer dose;
+    private Double dose;
     private String unitMetric;
     private String complementCode;
-    private Integer volTotal;
+    private Double volTotal;
     private String prot;
     private String condition;
     private String administrationTime;

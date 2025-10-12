@@ -50,6 +50,10 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
         return this.orderDetailPersistencePort.getResumeReport(startDate, endDate);
     }
 
+    public List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate) {
+        return this.orderDetailPersistencePort.getConcentrationReport(startDate, endDate);
+    }
+
     @Override
     @Transactional
     public OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateFormResourceDto body) {

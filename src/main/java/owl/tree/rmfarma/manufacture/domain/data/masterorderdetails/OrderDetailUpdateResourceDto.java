@@ -16,7 +16,7 @@ public class OrderDetailUpdateResourceDto {
     private String productName;
     private String productCode;
     private String productLaboratory;
-    private Integer quantity;
+    private Double quantity;
     private String complementName;
     private String complementCode;
     private String product;
@@ -26,7 +26,7 @@ public class OrderDetailUpdateResourceDto {
     private String viaDescription;
     private String via;
     private String prot;
-    private Integer volumeTotal;
+    private Double volumeTotal;
     private String unitMetric;
     private String condition;
     private String administrationTime;
