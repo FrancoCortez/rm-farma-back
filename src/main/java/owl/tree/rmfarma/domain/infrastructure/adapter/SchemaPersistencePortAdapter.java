@@ -2,6 +2,7 @@ package owl.tree.rmfarma.domain.infrastructure.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import owl.tree.rmfarma.domain.domain.data.schema.SchemaCreateDto;
 import owl.tree.rmfarma.domain.domain.data.schema.SchemaResourceDto;
 import owl.tree.rmfarma.domain.domain.ports.spi.SchemaPersistencePort;
 import owl.tree.rmfarma.domain.infrastructure.entities.Schema;
@@ -23,11 +24,14 @@ public class SchemaPersistencePortAdapter implements SchemaPersistencePort {
                 .toList();
     }
 
-    @Override
     public SchemaResourceDto findByCode(String code) {
         if (code == null || code.isEmpty()) return null;
         Schema schema = this.schemaRepository.findByCode(code).orElse(null);
         if (schema == null) return null;
         return this.schemaMapper.toSchemaResourceDto(schema);
+    }
+
+    public SchemaResourceDto createSchema(SchemaCreateDto dto) {
+        return this.schemaMapper.toSchemaResourceDto(this.schemaRepository.save(this.schemaMapper.toSchemaEntity(dto)));
     }
 }

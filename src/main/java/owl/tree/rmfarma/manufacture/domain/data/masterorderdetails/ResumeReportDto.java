@@ -1,10 +1,13 @@
 package owl.tree.rmfarma.manufacture.domain.data.masterorderdetails;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 @Data
 @NoArgsConstructor
@@ -24,4 +27,11 @@ public class ResumeReportDto {
     private Integer cycleDay;
     private Long ov;
     private String trainer;
+
+    @JsonGetter("productionDate")
+    public OffsetDateTime getProductionDateAsOffset() {
+        return productionDate != null
+                ? productionDate.toLocalDateTime().atOffset(ZoneOffset.UTC)
+                : null;
+    }
 }
