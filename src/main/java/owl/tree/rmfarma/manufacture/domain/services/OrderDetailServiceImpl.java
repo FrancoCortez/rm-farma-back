@@ -22,6 +22,8 @@ import owl.tree.rmfarma.product.domain.data.product.ProductResourceDto;
 import owl.tree.rmfarma.product.domain.ports.spi.CommercialProductPersistencePort;
 import owl.tree.rmfarma.product.domain.ports.spi.ComplementPersistencePort;
 import owl.tree.rmfarma.product.domain.ports.spi.ProductPersistencePort;
+import owl.tree.rmfarma.shared.enumes.StateMachineOrderDetailsEnum;
+import owl.tree.rmfarma.shared.exception.domain.IsEmptyException;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
@@ -52,6 +54,30 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
 
     public List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate) {
         return this.orderDetailPersistencePort.getConcentrationReport(startDate, endDate);
+    }
+
+    @Override
+    public List<PatientHistoryReportDto> patientHistoryReport() {
+        return this.orderDetailPersistencePort.patientHistoryReport();
+    }
+
+    @Override
+    @Transactional
+    public OrderDetailResourceDto updateStatus(OrderDetailUpdateStatusResourceDto body) {
+        log.info(body.toString());
+        OrderDetailResourceDto orderDetailResourceDto = this.orderDetailPersistencePort.findByMasterRecord(body.getMasterRecord());
+        if(orderDetailResourceDto == null) {
+            throw new IllegalArgumentException(STR."Order detail not found with master record: \{body.getMasterRecord()}");
+        }
+        String reason = body.getReasonForSuspension() != null ? body.getReasonForSuspension() : "";
+        if((orderDetailResourceDto.getCommercialOrderDetails() == null || orderDetailResourceDto.getCommercialOrderDetails().isEmpty()) && body.getCode().equals("ACTIVE")) {
+            throw new IsEmptyException("commercial", "Preparado");
+        }
+        if(body.getCode().equals("ACTIVE")) {
+            reason = "";
+        }
+        this.orderDetailPersistencePort.updateStatus(orderDetailResourceDto.getId(), body.getCode(), reason);
+        return orderDetailResourceDto;
     }
 
     @Override
@@ -114,24 +140,37 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
 
 
     private OrderDetailUpdateResourceDto generateOrderDetailUpdate(OrderDetailUpdateFormResourceDto body, String orderId) {
+        StateMachineOrderDetailsEnum state = StateMachineOrderDetailsEnum.ACTIVE;
+        if(body.getDetails().getStatus() != null && !body.getDetails().getStatus().isEmpty()) {
+            state = StateMachineOrderDetailsEnum.valueOf(body.getDetails().getStatus());
+        }
+        if(body.getDetails().getCommercialPart() == null || body.getDetails().getCommercialPart().isEmpty()) {
+            state = StateMachineOrderDetailsEnum.PENDING;
+        }
+        if(state.equals(StateMachineOrderDetailsEnum.PENDING) && (body.getDetails().getCommercialPart() != null && !body.getDetails().getCommercialPart().isEmpty())){
+            state = StateMachineOrderDetailsEnum.ACTIVE;
+
+        }
         OrderDetailUpdateResourceDto detail = OrderDetailUpdateResourceDto.builder()
                 .id(orderId)
                 .prot(body.getDetails().getProt())
                 .condition(body.getDetails().getCondition())
                 .administrationTime(body.getDetails().getAdministrationTime())
                 .quantity(body.getDetails().getDose())
+                .administrationDate(body.getDetails().getAdministrationDate())
+                .bedDay(body.getDetails().getBedDay())
                 .volumeTotal(body.getDetails().getVolTotal())
                 .unitMetric(body.getDetails().getUnitMetric())
                 .expirationDate(body.getDetails().getExpirationDate())
                 .productionDate(body.getDetails().getProductionDate())
                 .observation(body.getDetails().getObservation())
+                .status(state)
                 .concentration(body.getDetails().getConcentration())
                 .build();
         ProductResourceDto productResourceDto = this.productPersistencePort.findByCode(body.getDetails().getProductCode());
         if (productResourceDto != null) {
             detail.setProduct(productResourceDto.getId());
             detail.setProductCode(productResourceDto.getCode());
-            detail.setProductLaboratory(productResourceDto.getLaboratory());
             detail.setProductName(productResourceDto.getDescription());
         }
         ComplementResourceDto complementResourceDto = this.complementPersistencePort.findByCode(body.getDetails().getComplementCode());
@@ -152,6 +191,18 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
     }
 
     private OrderDetailCreateResourceDto generateOrderDetail(MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto, String masterOrderId, String masterRecord) {
+        StateMachineOrderDetailsEnum state = StateMachineOrderDetailsEnum.ACTIVE;
+        if(masterOrderCreateResourceUseCaseDto.getDetails().getStatus() != null && !masterOrderCreateResourceUseCaseDto.getDetails().getStatus().isEmpty()) {
+            state = StateMachineOrderDetailsEnum.valueOf(masterOrderCreateResourceUseCaseDto.getDetails().getStatus());
+        }
+        if(masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart() == null || masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().isEmpty()) {
+            state = StateMachineOrderDetailsEnum.PENDING;
+        }
+
+        if(state.equals(StateMachineOrderDetailsEnum.PENDING) && (masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart() != null && !masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().isEmpty())){
+            state = StateMachineOrderDetailsEnum.ACTIVE;
+
+        }
         OrderDetailCreateResourceDto detail = OrderDetailCreateResourceDto.builder()
                 .prot(masterOrderCreateResourceUseCaseDto.getDetails().getProt())
                 .condition(masterOrderCreateResourceUseCaseDto.getDetails().getCondition())
@@ -160,15 +211,17 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
                 .volumeTotal(masterOrderCreateResourceUseCaseDto.getDetails().getVolTotal())
                 .unitMetric(masterOrderCreateResourceUseCaseDto.getDetails().getUnitMetric())
                 .expirationDate(masterOrderCreateResourceUseCaseDto.getDetails().getExpirationDate())
+                .administrationDate(masterOrderCreateResourceUseCaseDto.getDetails().getAdministrationDate())
+                .bedDay(masterOrderCreateResourceUseCaseDto.getDetails().getBedDay())
                 .productionDate(masterOrderCreateResourceUseCaseDto.getDetails().getProductionDate())
                 .observation(masterOrderCreateResourceUseCaseDto.getDetails().getObservation())
                 .concentration(masterOrderCreateResourceUseCaseDto.getDetails().getConcentration())
+                .status(state)
                 .build();
         ProductResourceDto productResourceDto = this.productPersistencePort.findByCode(masterOrderCreateResourceUseCaseDto.getDetails().getProductCode());
         if (productResourceDto != null) {
             detail.setProduct(productResourceDto.getId());
             detail.setProductCode(productResourceDto.getCode());
-            detail.setProductLaboratory(productResourceDto.getLaboratory());
             detail.setProductName(productResourceDto.getDescription());
         }
         ComplementResourceDto complementResourceDto = this.complementPersistencePort.findByCode(masterOrderCreateResourceUseCaseDto.getDetails().getComplementCode());

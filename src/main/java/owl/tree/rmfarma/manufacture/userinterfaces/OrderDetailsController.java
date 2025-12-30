@@ -36,8 +36,18 @@ public class OrderDetailsController {
         return ResponseEntity.ok(reportOrderDetailUseCase.concentrationReport(startDate, endDate));
     }
 
+    @GetMapping("/generate/patient-history-report")
+    public ResponseEntity<List<PatientHistoryReportDto>> getPatientHistoryReport() {
+        return ResponseEntity.ok(this.reportOrderDetailUseCase.patientHistoryReport());
+    }
+
     @PutMapping("/update")
     public ResponseEntity<OrderDetailResourceDto> updateOrderDetail(@RequestBody OrderDetailUpdateFormResourceDto body) {
         return ResponseEntity.ok(this.updateOrderDetailUseCase.updateOrderDetail(body));
+    }
+
+    @PostMapping("/update-status")
+    public ResponseEntity<OrderDetailResourceDto> updateStatus(@RequestBody OrderDetailUpdateStatusResourceDto body) {
+        return ResponseEntity.ok(this.updateOrderDetailUseCase.updateStatusOrderDetail(body));
     }
 }

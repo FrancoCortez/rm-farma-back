@@ -1,6 +1,7 @@
 package owl.tree.rmfarma.manufacture.application.masterorder;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.manufacture.application.masterorder.data.MasterOrderCreateResourceUseCaseDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorder.MasterOrderResourceDto;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CreateMasterOrderUseCase {
 
     private final MasterOrderServicePort masterOrderServicePort;

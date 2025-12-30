@@ -2,23 +2,28 @@ package owl.tree.rmfarma.patient.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import owl.tree.rmfarma.doctor.infrastructure.entities.Doctor;
 import owl.tree.rmfarma.domain.infrastructure.entities.Diagnosis;
 import owl.tree.rmfarma.domain.infrastructure.entities.HospitalUnit;
 import owl.tree.rmfarma.domain.infrastructure.entities.Schema;
 import owl.tree.rmfarma.manufacture.infrastructure.entities.DiagnosisOrderStage;
 import owl.tree.rmfarma.service.infrastructure.entities.Services;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity(name = "diagnosis_patient")
+@Audited
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DiagnosisPatient {
+@EntityListeners(AuditingEntityListener.class)
+public class DiagnosisPatient extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

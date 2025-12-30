@@ -2,7 +2,10 @@ package owl.tree.rmfarma.manufacture.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import owl.tree.rmfarma.product.infrastructure.entities.CommercialProduct;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
 
 @Entity(name = "commercial_order_detail")
 @Getter
@@ -10,7 +13,9 @@ import owl.tree.rmfarma.product.infrastructure.entities.CommercialProduct;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommercialOrderDetail {
+@Audited
+@EntityListeners(AuditingEntityListener.class)
+public class CommercialOrderDetail extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

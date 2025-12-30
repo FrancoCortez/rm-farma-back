@@ -7,6 +7,7 @@ import owl.tree.rmfarma.manufacture.domain.ports.spi.OrderDetailPersistencePort;
 import owl.tree.rmfarma.manufacture.infrastructure.entities.OrderDetail;
 import owl.tree.rmfarma.manufacture.infrastructure.mappers.OrderDetailMapper;
 import owl.tree.rmfarma.manufacture.infrastructure.repository.OrderDetailRepository;
+import owl.tree.rmfarma.shared.enumes.StateMachineOrderDetailsEnum;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -27,6 +28,17 @@ public class OrderDetailPersistencePortAdapter implements OrderDetailPersistence
 
     public List<ResumeReportDto> getResumeReport(OffsetDateTime startDate, OffsetDateTime endDate) {
         return this.orderDetailRepository.getResumeReport(startDate, endDate);
+    }
+
+    @Override
+    public List<PatientHistoryReportDto> patientHistoryReport() {
+        return this.orderDetailRepository.patientHistoryReport();
+    }
+
+    @Override
+    public void updateStatus(String id, String code, String reasonForSuspension) {
+        StateMachineOrderDetailsEnum statusEnum = StateMachineOrderDetailsEnum.valueOf(code);
+        this.orderDetailRepository.updateStatusById(id, statusEnum, reasonForSuspension);
     }
 
     public List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate) {

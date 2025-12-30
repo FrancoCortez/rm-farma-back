@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailUpdateFormResourceDto;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailUpdateStatusResourceDto;
 import owl.tree.rmfarma.manufacture.domain.ports.api.OrderDetailServicePort;
 
 @Component
@@ -17,5 +18,9 @@ public class UpdateOrderDetailUseCase {
 
     public OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateFormResourceDto body) {
         return this.orderDetailServicePort.updateOrderDetail(body);
+    }
+
+    public OrderDetailResourceDto updateStatusOrderDetail (OrderDetailUpdateStatusResourceDto body) {
+        return this.orderDetailServicePort.updateStatus(body);
     }
 }

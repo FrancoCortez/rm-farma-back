@@ -2,12 +2,17 @@ package owl.tree.rmfarma.doctor.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import owl.tree.rmfarma.patient.infrastructure.entities.DiagnosisPatient;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity(name = "doctor")
+@EntityListeners(AuditingEntityListener.class)
+@Audited
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,7 +22,7 @@ import java.util.Set;
         @Index(name = "idx_doctor_rut", columnList = "rut"),
         @Index(name = "idx_doctor_code", columnList = "code")
 })
-public class Doctor {
+public class Doctor extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

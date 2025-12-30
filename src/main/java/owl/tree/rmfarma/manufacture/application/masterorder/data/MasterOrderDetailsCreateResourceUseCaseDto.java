@@ -16,6 +16,8 @@ public class MasterOrderDetailsCreateResourceUseCaseDto {
     private String unitMetric;
     private String complementCode;
     private Double volTotal;
+    private OffsetDateTime administrationDate;
+    private String bedDay;
     private String prot;
     private String condition;
     private String administrationTime;
@@ -24,5 +26,6 @@ public class MasterOrderDetailsCreateResourceUseCaseDto {
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
     private String concentration;
+    private String status;
     private List<CommercialAddCreateResourceUseCaseDto> commercialPart;
 }

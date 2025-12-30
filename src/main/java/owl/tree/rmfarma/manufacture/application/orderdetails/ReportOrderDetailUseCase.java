@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.ConcentrationReportDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.CustomReportDTO;
+import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.PatientHistoryReportDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.ResumeReportDto;
 import owl.tree.rmfarma.manufacture.domain.ports.api.OrderDetailServicePort;
 
@@ -25,5 +26,9 @@ public class ReportOrderDetailUseCase {
 
     public List<ConcentrationReportDto> concentrationReport(OffsetDateTime startDate, OffsetDateTime endDate) {
         return orderDetailServicePort.getConcentrationReport(startDate, endDate);
+    }
+
+    public List<PatientHistoryReportDto> patientHistoryReport() {
+        return orderDetailServicePort.patientHistoryReport();
     }
 }

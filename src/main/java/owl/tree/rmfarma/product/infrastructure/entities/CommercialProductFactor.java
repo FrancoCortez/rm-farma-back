@@ -2,6 +2,9 @@ package owl.tree.rmfarma.product.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
 
 @Entity(name = "commercial_product_factor")
 @Getter
@@ -9,7 +12,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommercialProductFactor {
+@EntityListeners(AuditingEntityListener.class)
+@Audited
+public class CommercialProductFactor extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", length = 36)

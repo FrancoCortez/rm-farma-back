@@ -2,9 +2,14 @@ package owl.tree.rmfarma.manufacture.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import owl.tree.rmfarma.domain.infrastructure.entities.Via;
 import owl.tree.rmfarma.product.infrastructure.entities.Complement;
 import owl.tree.rmfarma.product.infrastructure.entities.Product;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
+import owl.tree.rmfarma.shared.enumes.StateMachineEnum;
+import owl.tree.rmfarma.shared.enumes.StateMachineOrderDetailsEnum;
 
 import java.time.OffsetDateTime;
 import java.util.LinkedHashSet;
@@ -16,7 +21,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderDetail {
+@Audited
+@EntityListeners(AuditingEntityListener.class)
+public class OrderDetail extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", length = 36)
@@ -47,10 +54,20 @@ public class OrderDetail {
     private Double volumeTotal;
     @Column(name = "unit_metric", length = 10)
     private String unitMetric;
+    @Column(name = "bed_day", length = 10)
+    private String bedDay;
     @Column(name = "production_date")
     private OffsetDateTime productionDate;
+    @Column(name = "administration_date")
+    private OffsetDateTime administrationDate;
     @Column(name = "expiration_date_date")
     private OffsetDateTime expirationDate;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", columnDefinition = "ENUM('ACTIVE', 'PENDING', 'SUSPENDED') DEFAULT 'ACTIVE'", nullable = false)
+    private StateMachineOrderDetailsEnum status;
+
+    @Column(name = "reason_for_suspension", length = 500)
+    private String reasonForSuspension;
 
     @Column(name = "conditional", length = 50)
     private String condition;

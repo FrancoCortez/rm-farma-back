@@ -2,6 +2,7 @@ package owl.tree.rmfarma.manufacture.domain.data.masterorderdetails;
 
 
 import lombok.*;
+import owl.tree.rmfarma.shared.enumes.StateMachineOrderDetailsEnum;
 
 import java.time.OffsetDateTime;
 
@@ -31,7 +32,10 @@ public class OrderDetailUpdateResourceDto {
     private String condition;
     private String administrationTime;
     private String observation;
+    private StateMachineOrderDetailsEnum status;
     private String concentration;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
+    private OffsetDateTime administrationDate;
+    private String bedDay;
 }

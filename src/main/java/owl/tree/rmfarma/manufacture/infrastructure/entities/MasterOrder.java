@@ -2,9 +2,12 @@ package owl.tree.rmfarma.manufacture.infrastructure.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import owl.tree.rmfarma.domain.infrastructure.entities.DocumentType;
 import owl.tree.rmfarma.domain.infrastructure.entities.Via;
 import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
 import owl.tree.rmfarma.shared.enumes.StateMachineEnum;
 
 import java.time.OffsetDateTime;
@@ -20,7 +23,9 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MasterOrder {
+@Audited
+@EntityListeners(AuditingEntityListener.class)
+public class MasterOrder extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", length = 36)

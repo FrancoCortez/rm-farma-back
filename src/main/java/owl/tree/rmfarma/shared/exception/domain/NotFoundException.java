@@ -5,7 +5,7 @@ import owl.tree.rmfarma.shared.exception.base.BusinessException;
 public class NotFoundException extends BusinessException {
     public NotFoundException(String object, String entity) {
         super("""
-                The %s object for id %s was not found.
+                El objeto %s con id %s no fue encontrado.
                 """.formatted(object, entity)
         );
     }

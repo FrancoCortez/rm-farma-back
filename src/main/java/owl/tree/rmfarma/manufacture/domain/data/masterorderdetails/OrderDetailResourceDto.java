@@ -4,6 +4,7 @@ import lombok.*;
 import owl.tree.rmfarma.domain.domain.data.via.ViaResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.commercialorderdetail.CommercialOrderDetailResourceDto;
 import owl.tree.rmfarma.product.domain.data.complement.ComplementResourceDto;
+import owl.tree.rmfarma.shared.enumes.StateMachineOrderDetailsEnum;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -30,8 +31,12 @@ public class OrderDetailResourceDto {
     private String complementCode;
     private OffsetDateTime productionDate;
     private OffsetDateTime expirationDate;
+    private OffsetDateTime administrationDate;
+    private String bedDay;
     private String concentration;
     private ViaResourceDto via;
+    private StateMachineOrderDetailsEnum status;
+    private String reasonForSuspension;
     private ComplementResourceDto complement;
     private List<CommercialOrderDetailResourceDto> commercialOrderDetails;
 }

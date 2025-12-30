@@ -3,7 +3,6 @@ package owl.tree.rmfarma.manufacture.domain.data.masterorderdetails;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.*;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;

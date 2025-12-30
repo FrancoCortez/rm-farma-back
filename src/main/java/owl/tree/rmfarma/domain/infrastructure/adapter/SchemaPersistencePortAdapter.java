@@ -9,6 +9,7 @@ import owl.tree.rmfarma.domain.infrastructure.entities.Schema;
 import owl.tree.rmfarma.domain.infrastructure.mappers.SchemaMapper;
 import owl.tree.rmfarma.domain.infrastructure.repository.SchemaRepository;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -20,6 +21,7 @@ public class SchemaPersistencePortAdapter implements SchemaPersistencePort {
     public List<SchemaResourceDto> findAll() {
         return this.schemaRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Schema::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(this.schemaMapper::toSchemaResourceDto)
                 .toList();
     }

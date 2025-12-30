@@ -16,4 +16,8 @@ public interface OrderDetailServicePort {
     List<ResumeReportDto> getResumeReport(OffsetDateTime startDate, OffsetDateTime endDate);
 
     List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate);
+
+    List<PatientHistoryReportDto> patientHistoryReport();
+
+    OrderDetailResourceDto updateStatus(OrderDetailUpdateStatusResourceDto body);
 }

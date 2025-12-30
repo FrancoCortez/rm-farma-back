@@ -5,13 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.Audited;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import owl.tree.rmfarma.shared.entities.BaseEntity;
 
 @Entity(name = "generator_id")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GeneratorId {
+@Audited
+@EntityListeners(AuditingEntityListener.class)
+public class GeneratorId extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", length = 36)

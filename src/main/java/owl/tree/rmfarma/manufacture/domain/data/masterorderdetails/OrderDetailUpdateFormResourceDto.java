@@ -11,4 +11,5 @@ public class OrderDetailUpdateFormResourceDto {
     private String master;
     private String masterRecord;
     private OrderDetailUpdateDetailResourceDto details;
+
 }

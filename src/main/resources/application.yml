@@ -13,8 +13,9 @@ spring:
 #    username: phpmyadmin
     username: root
     password: Cl1.m4r,.2023
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: update
     show-sql: false
@@ -22,7 +23,15 @@ spring:
       jdbc:
         batch_versioned_data: true
       hibernate:
-        format_sql: true
+        format_sql: false
+        listeners:
+          evers:
+            autoRegister: true
+        integration:
+          evenrs:
+            enabled: true
+    database-platform: org.hibernate.dialect.MySQLDialect
+
 server:
   port: 8080
   servlet:

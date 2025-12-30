@@ -18,4 +18,8 @@ public interface OrderDetailPersistencePort {
     OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateResourceDto orderUpdate);
 
     List<ResumeReportDto> getResumeReport(OffsetDateTime startDate, OffsetDateTime endDate);
+
+    List<PatientHistoryReportDto> patientHistoryReport();
+
+    void updateStatus(String id, String code, String reasonForSuspension);
 }
