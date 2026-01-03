@@ -67,7 +67,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
         log.info(body.toString());
         OrderDetailResourceDto orderDetailResourceDto = this.orderDetailPersistencePort.findByMasterRecord(body.getMasterRecord());
         if(orderDetailResourceDto == null) {
-            throw new IllegalArgumentException(STR."Order detail not found with master record: \{body.getMasterRecord()}");
+            throw new IllegalArgumentException("Order detail not found with master record: " + body.getMasterRecord());
         }
         String reason = body.getReasonForSuspension() != null ? body.getReasonForSuspension() : "";
         if((orderDetailResourceDto.getCommercialOrderDetails() == null || orderDetailResourceDto.getCommercialOrderDetails().isEmpty()) && body.getCode().equals("ACTIVE")) {
