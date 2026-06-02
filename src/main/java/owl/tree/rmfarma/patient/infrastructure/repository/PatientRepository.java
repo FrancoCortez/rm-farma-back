@@ -35,6 +35,7 @@ public interface PatientRepository extends JpaRepository<Patient, String> {
             )
                         FROM patient p
                         WHERE (:identification IS NULL OR :identification = '' OR p.identification LIKE %:identification%)
+                        ORDER BY CASE WHEN p.createdDate IS NULL THEN 1 ELSE 0 END, p.createdDate DESC
             """)
     List<PatientComboResourceDto> findPatientByIdentificationContaining(@Param("identification") String identification);
 }

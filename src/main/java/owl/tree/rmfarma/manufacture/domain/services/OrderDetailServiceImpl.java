@@ -64,8 +64,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
     @Override
     @Transactional
     public OrderDetailResourceDto updateStatus(OrderDetailUpdateStatusResourceDto body) {
-        log.info(body.toString());
-        OrderDetailResourceDto orderDetailResourceDto = this.orderDetailPersistencePort.findByMasterRecord(body.getMasterRecord());
+        OrderDetailResourceDto orderDetailResourceDto = this.orderDetailPersistencePort.findById(body.getMasterRecord());
         if(orderDetailResourceDto == null) {
             throw new IllegalArgumentException("Order detail not found with master record: " + body.getMasterRecord());
         }
@@ -158,7 +157,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
                 .administrationTime(body.getDetails().getAdministrationTime())
                 .quantity(body.getDetails().getDose())
                 .administrationDate(body.getDetails().getAdministrationDate())
-                .bedDay(body.getDetails().getBedDay())
+                .bedDay(body.getDetails().getBedDay() == null || body.getDetails().getBedDay().isEmpty() ? "No" : body.getDetails().getBedDay())
                 .volumeTotal(body.getDetails().getVolTotal())
                 .unitMetric(body.getDetails().getUnitMetric())
                 .expirationDate(body.getDetails().getExpirationDate())
@@ -212,7 +211,7 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
                 .unitMetric(masterOrderCreateResourceUseCaseDto.getDetails().getUnitMetric())
                 .expirationDate(masterOrderCreateResourceUseCaseDto.getDetails().getExpirationDate())
                 .administrationDate(masterOrderCreateResourceUseCaseDto.getDetails().getAdministrationDate())
-                .bedDay(masterOrderCreateResourceUseCaseDto.getDetails().getBedDay())
+                .bedDay(masterOrderCreateResourceUseCaseDto.getDetails().getBedDay() == null ||  masterOrderCreateResourceUseCaseDto.getDetails().getBedDay().isEmpty()? "No": masterOrderCreateResourceUseCaseDto.getDetails().getBedDay())
                 .productionDate(masterOrderCreateResourceUseCaseDto.getDetails().getProductionDate())
                 .observation(masterOrderCreateResourceUseCaseDto.getDetails().getObservation())
                 .concentration(masterOrderCreateResourceUseCaseDto.getDetails().getConcentration())
@@ -243,6 +242,6 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
 
     private String generateID(int currentYear) {
         GeneratorIdResourceDto generatorIdResourceDto = this.generatorIdPersistencePort.generateId(currentYear);
-        return generatorIdResourceDto.getCorrelative() + "/" + generatorIdResourceDto.getYear();
+        return generatorIdResourceDto.getCorrelative() + "/" + generatorIdResourceDto.getYear().toString().substring(2,4);
     }
 }

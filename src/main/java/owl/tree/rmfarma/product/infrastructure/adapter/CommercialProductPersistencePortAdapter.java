@@ -39,4 +39,13 @@ public class CommercialProductPersistencePortAdapter implements CommercialProduc
     public CommercialProductResourceDto createCommercialProduct(CommercialProductCreateDto dto) {
         return this.commercialProductMapper.toCommercialProductResourceDto(this.commercialProductRepository.save(this.commercialProductMapper.toCommercialProduct(dto)));
     }
+
+    @Override
+    public List<CommercialProductResourceDto> findByProductId(String id) {
+        return this.commercialProductRepository.findByProductCode(id)
+                .stream()
+                .sorted(Comparator.comparing(CommercialProduct::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
+                .map(this.commercialProductMapper::toCommercialProductResourceDto)
+                .toList();
+    }
 }

@@ -12,4 +12,5 @@ public interface CommercialProductPersistencePort {
 
     CommercialProductResourceDto createCommercialProduct(CommercialProductCreateDto dto);
 
+    List<CommercialProductResourceDto> findByProductId(String id);
 }

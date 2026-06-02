@@ -11,7 +11,9 @@ import owl.tree.rmfarma.patient.domain.ports.spi.PatientPersistencePort;
 import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
 import owl.tree.rmfarma.patient.infrastructure.mappers.PatientMapper;
 import owl.tree.rmfarma.patient.infrastructure.repository.PatientRepository;
+import owl.tree.rmfarma.product.infrastructure.entities.CommercialProduct;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Component
@@ -36,6 +38,7 @@ public class PatientPersistencePortAdapter implements PatientPersistencePort {
     public List<PatientResourceDto> findAll() {
         return this.patientRepository.findAll()
                 .stream()
+                .sorted(Comparator.comparing(Patient::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(patientMapper::toPatientResourceDto)
                 .toList();
     }

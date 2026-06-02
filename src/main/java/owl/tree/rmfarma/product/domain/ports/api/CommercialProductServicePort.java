@@ -9,4 +9,6 @@ public interface CommercialProductServicePort {
     List<CommercialProductResourceDto> findAll();
 
     CommercialProductResourceDto createCommercialProduct(CommercialProductCreateDto dto);
+
+    List<CommercialProductResourceDto> findByProductId(String id);
 }

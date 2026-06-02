@@ -16,4 +16,8 @@ public class FindCommercialProductUseCase {
 
         return this.commercialProductServicePort.findAll();
     }
+
+    public List<CommercialProductResourceDto> findByProductId(String id) {
+        return this.commercialProductServicePort.findByProductId(id);
+    }
 }

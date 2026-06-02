@@ -13,6 +13,8 @@ public interface OrderDetailPersistencePort {
 
     OrderDetailResourceDto findByMasterRecord(String masterRecord);
 
+    OrderDetailResourceDto findById(String id);
+
     List<ConcentrationReportDto> getConcentrationReport(OffsetDateTime startDate, OffsetDateTime endDate);
 
     OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateResourceDto orderUpdate);

@@ -53,6 +53,14 @@ public class OrderDetailPersistencePortAdapter implements OrderDetailPersistence
         return this.orderDetailMapper.toOrderDetailResourceDto(entity);
     }
 
+    public OrderDetailResourceDto findById(String id) {
+        OrderDetail entity = this.orderDetailRepository.findById(id).orElse(null);
+        if(entity == null) {
+            return null;
+        }
+        return this.orderDetailMapper.toOrderDetailResourceDto(entity);
+    }
+
     @Override
     public OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateResourceDto orderUpdate) {
         return this.orderDetailMapper.toOrderDetailResourceDto(this.orderDetailRepository.save(this.orderDetailMapper.toOrderDetailEntityUpdate(orderUpdate)));

@@ -39,4 +39,9 @@ public class CommercialProductServiceImpl implements CommercialProductServicePor
         dto.setActiveIngredientCode(productResourceDto.getId());
         return this.commercialProductPersistencePort.createCommercialProduct(dto);
     }
+
+    @Override
+    public List<CommercialProductResourceDto> findByProductId(String id) {
+        return this.commercialProductPersistencePort.findByProductId(id);
+    }
 }
