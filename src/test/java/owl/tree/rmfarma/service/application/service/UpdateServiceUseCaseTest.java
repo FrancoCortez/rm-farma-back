@@ -25,6 +25,8 @@ import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 @ExtendWith(MockitoExtension.class)
 class UpdateServiceUseCaseTest {
 
+    private static final String ID_UUID = "550e8400-e29b-41d4-a716-446655440000";
+
     @Mock
     private ServicesPersistencePort servicesPersistencePort;
 
@@ -36,7 +38,7 @@ class UpdateServiceUseCaseTest {
 
     @Test
     void updateThrowsNotFoundExceptionWhenServiceDoesNotExist() {
-        when(servicesPersistencePort.findByCode("MISSING")).thenReturn(Optional.empty());
+        when(servicesPersistencePort.findById("MISSING")).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> updateServiceUseCase.update("MISSING",
                 new UpdateServiceRequest("MISSING", "Anything")))
@@ -49,18 +51,18 @@ class UpdateServiceUseCaseTest {
     @Test
     void updateAllowsSelfExclusionForSameCodeAndDescription() {
         Services existing = Services.builder()
-                .id("uuid-1")
+                .id(ID_UUID)
                 .code("SRV-001")
                 .description("Checkup")
                 .enabled(true)
                 .build();
-        when(servicesPersistencePort.findByCode("SRV-001")).thenReturn(Optional.of(existing));
+        when(servicesPersistencePort.findById(ID_UUID)).thenReturn(Optional.of(existing));
         when(servicesPersistencePort.save(existing)).thenReturn(existing);
         ServiceResourceDto dto = ServiceResourceDto.builder()
-                .id("uuid-1").code("SRV-001").description("Checkup").enabled(true).build();
+                .id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
         when(servicesMapper.toServiceResourceDto(existing)).thenReturn(dto);
 
-        ServiceResourceDto result = updateServiceUseCase.update("SRV-001",
+        ServiceResourceDto result = updateServiceUseCase.update(ID_UUID,
                 new UpdateServiceRequest("SRV-001", "Checkup"));
 
         assertThat(result).isSameAs(dto);
@@ -72,15 +74,15 @@ class UpdateServiceUseCaseTest {
     @Test
     void updateThrowsExistsExceptionWhenCodeIsTakenByAnotherService() {
         Services existing = Services.builder()
-                .id("uuid-1")
+                .id(ID_UUID)
                 .code("SRV-001")
                 .description("Checkup")
                 .enabled(true)
                 .build();
-        when(servicesPersistencePort.findByCode("SRV-001")).thenReturn(Optional.of(existing));
-        when(servicesPersistencePort.existsByCodeAndIdNot("SRV-002", "uuid-1")).thenReturn(true);
+        when(servicesPersistencePort.findById(ID_UUID)).thenReturn(Optional.of(existing));
+        when(servicesPersistencePort.existsByCodeAndIdNot("SRV-002", ID_UUID)).thenReturn(true);
 
-        assertThatThrownBy(() -> updateServiceUseCase.update("SRV-001",
+        assertThatThrownBy(() -> updateServiceUseCase.update(ID_UUID,
                 new UpdateServiceRequest("SRV-002", "Checkup")))
                 .isInstanceOf(ExistsException.class)
                 .hasMessageContaining("code");
@@ -91,15 +93,15 @@ class UpdateServiceUseCaseTest {
     @Test
     void updateThrowsExistsExceptionWhenDescriptionIsTakenByAnotherService() {
         Services existing = Services.builder()
-                .id("uuid-1")
+                .id(ID_UUID)
                 .code("SRV-001")
                 .description("Checkup")
                 .enabled(true)
                 .build();
-        when(servicesPersistencePort.findByCode("SRV-001")).thenReturn(Optional.of(existing));
-        when(servicesPersistencePort.existsByDescriptionAndIdNot("Other", "uuid-1")).thenReturn(true);
+        when(servicesPersistencePort.findById(ID_UUID)).thenReturn(Optional.of(existing));
+        when(servicesPersistencePort.existsByDescriptionAndIdNot("Other", ID_UUID)).thenReturn(true);
 
-        assertThatThrownBy(() -> updateServiceUseCase.update("SRV-001",
+        assertThatThrownBy(() -> updateServiceUseCase.update(ID_UUID,
                 new UpdateServiceRequest("SRV-001", "Other")))
                 .isInstanceOf(ExistsException.class)
                 .hasMessageContaining("description");
@@ -110,18 +112,18 @@ class UpdateServiceUseCaseTest {
     @Test
     void updatePersistsTrimmedValuesAndReturnsMappedDto() {
         Services existing = Services.builder()
-                .id("uuid-1")
+                .id(ID_UUID)
                 .code("SRV-001")
                 .description("Old")
                 .enabled(true)
                 .build();
-        when(servicesPersistencePort.findByCode("SRV-001")).thenReturn(Optional.of(existing));
+        when(servicesPersistencePort.findById(ID_UUID)).thenReturn(Optional.of(existing));
         when(servicesPersistencePort.save(existing)).thenReturn(existing);
         ServiceResourceDto dto = ServiceResourceDto.builder()
-                .id("uuid-1").code("SRV-001").description("Updated").enabled(true).build();
+                .id(ID_UUID).code("SRV-001").description("Updated").enabled(true).build();
         when(servicesMapper.toServiceResourceDto(existing)).thenReturn(dto);
 
-        ServiceResourceDto result = updateServiceUseCase.update("SRV-001",
+        ServiceResourceDto result = updateServiceUseCase.update(ID_UUID,
                 new UpdateServiceRequest("  SRV-001  ", "  Updated  "));
 
         assertThat(result).isSameAs(dto);

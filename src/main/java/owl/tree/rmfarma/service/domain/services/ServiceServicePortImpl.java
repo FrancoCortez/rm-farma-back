@@ -42,11 +42,11 @@ public class ServiceServicePortImpl implements ServiceServicePort {
     }
 
     @Override
-    public ServiceResourceDto update(String code, UpdateServiceRequest request) {
+    public ServiceResourceDto update(String id, UpdateServiceRequest request) {
         String trimmedCode = request.code() == null ? null : request.code().trim();
         String trimmedDescription = request.description() == null ? null : request.description().trim();
-        Services current = servicesPersistencePort.findByCode(code)
-                .orElseThrow(() -> new owl.tree.rmfarma.shared.exception.domain.NotFoundException("Service", code));
+        Services current = servicesPersistencePort.findById(id)
+                .orElseThrow(() -> new owl.tree.rmfarma.shared.exception.domain.NotFoundException("Service", id));
         if (trimmedCode != null && !trimmedCode.equals(current.getCode())
                 && servicesPersistencePort.existsByCodeAndIdNot(trimmedCode, current.getId())) {
             throw new owl.tree.rmfarma.shared.exception.domain.ExistsException("code", "Service", trimmedCode);
@@ -61,18 +61,18 @@ public class ServiceServicePortImpl implements ServiceServicePort {
     }
 
     @Override
-    public void deleteByCode(String code) {
-        Optional<Services> found = servicesPersistencePort.findEnabledByCode(code);
+    public void deleteById(String id) {
+        Optional<Services> found = servicesPersistencePort.findEnabledById(id);
         if (found.isEmpty()) {
-            throw new owl.tree.rmfarma.shared.exception.domain.NotFoundException("Service", code);
+            throw new owl.tree.rmfarma.shared.exception.domain.NotFoundException("Service", id);
         }
-        servicesPersistencePort.disableByCode(code);
+        servicesPersistencePort.disableById(id);
     }
 
     @Override
-    public ServiceResourceDto findByCode(String code) {
-        return servicesPersistencePort.findByCode(code)
+    public ServiceResourceDto findById(String id) {
+        return servicesPersistencePort.findById(id)
                 .map(servicesMapper::toServiceResourceDto)
-                .orElseThrow(() -> new owl.tree.rmfarma.shared.exception.domain.NotFoundException("Service", code));
+                .orElseThrow(() -> new owl.tree.rmfarma.shared.exception.domain.NotFoundException("Service", id));
     }
 }

@@ -20,7 +20,9 @@ import owl.tree.rmfarma.service.infrastructure.mappers.ServicesMapper;
 import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
-class GetServiceByCodeUseCaseTest {
+class GetServiceByIdUseCaseTest {
+
+    private static final String ID_UUID = "550e8400-e29b-41d4-a716-446655440000";
 
     @Mock
     private ServicesPersistencePort servicesPersistencePort;
@@ -29,27 +31,27 @@ class GetServiceByCodeUseCaseTest {
     private ServicesMapper servicesMapper;
 
     @InjectMocks
-    private GetServiceByCodeUseCase getServiceByCodeUseCase;
+    private GetServiceByIdUseCase getServiceByIdUseCase;
 
     @Test
-    void findByCodeReturnsMappedDtoWhenPresent() {
+    void findByIdReturnsMappedDtoWhenPresent() {
         Services entity = Services.builder()
-                .id("uuid-1").code("SRV-001").description("Checkup").enabled(true).build();
+                .id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
         ServiceResourceDto dto = ServiceResourceDto.builder()
-                .id("uuid-1").code("SRV-001").description("Checkup").enabled(true).build();
-        when(servicesPersistencePort.findByCode("SRV-001")).thenReturn(Optional.of(entity));
+                .id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
+        when(servicesPersistencePort.findById(ID_UUID)).thenReturn(Optional.of(entity));
         when(servicesMapper.toServiceResourceDto(entity)).thenReturn(dto);
 
-        ServiceResourceDto result = getServiceByCodeUseCase.findByCode("SRV-001");
+        ServiceResourceDto result = getServiceByIdUseCase.findById(ID_UUID);
 
         assertThat(result).isSameAs(dto);
     }
 
     @Test
-    void findByCodeThrowsNotFoundWhenMissing() {
-        when(servicesPersistencePort.findByCode("MISSING")).thenReturn(Optional.empty());
+    void findByIdThrowsNotFoundWhenMissing() {
+        when(servicesPersistencePort.findById("MISSING")).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> getServiceByCodeUseCase.findByCode("MISSING"))
+        assertThatThrownBy(() -> getServiceByIdUseCase.findById("MISSING"))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("MISSING");
 

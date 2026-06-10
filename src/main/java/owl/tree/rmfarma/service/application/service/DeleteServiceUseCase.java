@@ -11,10 +11,10 @@ public class DeleteServiceUseCase {
 
     private final ServicesPersistencePort servicesPersistencePort;
 
-    public void deleteByCode(String code) {
-        if (servicesPersistencePort.findEnabledByCode(code).isEmpty()) {
-            throw new NotFoundException("Service", code);
+    public void deleteById(String id) {
+        if (servicesPersistencePort.findEnabledById(id).isEmpty()) {
+            throw new NotFoundException("Service", id);
         }
-        servicesPersistencePort.disableByCode(code);
+        servicesPersistencePort.disableById(id);
     }
 }

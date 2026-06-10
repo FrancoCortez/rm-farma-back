@@ -7,17 +7,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ServicesPersistencePort {
-    Optional<Services> findByCode(String code);
+    Optional<Services> findById(String id);
 
-    Optional<ServiceResourceDto> findResourceByCode(String code);
+    Optional<ServiceResourceDto> findResourceById(String id);
 
     List<ServiceResourceDto> findAll();
 
     Services save(Services entity);
 
-    Optional<Services> findEnabledByCode(String code);
+    Optional<Services> findEnabledById(String id);
 
-    void disableByCode(String code);
+    void disableById(String id);
 
     boolean existsByCode(String code);
 

@@ -11,9 +11,9 @@ public interface ServiceServicePort {
 
     ServiceResourceDto create(CreateServiceRequest request);
 
-    ServiceResourceDto update(String code, UpdateServiceRequest request);
+    ServiceResourceDto update(String id, UpdateServiceRequest request);
 
-    void deleteByCode(String code);
+    void deleteById(String id);
 
-    ServiceResourceDto findByCode(String code);
+    ServiceResourceDto findById(String id);
 }

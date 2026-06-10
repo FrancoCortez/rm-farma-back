@@ -8,7 +8,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +16,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
 import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
-import owl.tree.rmfarma.service.domain.data.service.UpdateServiceRequest;
 import owl.tree.rmfarma.service.domain.ports.spi.ServicesPersistencePort;
 import owl.tree.rmfarma.service.infrastructure.entities.Services;
 import owl.tree.rmfarma.service.infrastructure.mappers.ServicesMapper;
@@ -26,6 +24,8 @@ import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class ServiceServicePortImplTest {
+
+    private static final String ID_UUID = "550e8400-e29b-41d4-a716-446655440000";
 
     @Mock
     private ServicesPersistencePort servicesPersistencePort;
@@ -37,19 +37,19 @@ class ServiceServicePortImplTest {
     private ServiceServicePortImpl impl;
 
     @Test
-    void findByCodeReturnsMappedDto() {
-        Services entity = Services.builder().id("1").code("SRV-001").description("Checkup").enabled(true).build();
-        ServiceResourceDto dto = ServiceResourceDto.builder().id("1").code("SRV-001").description("Checkup").enabled(true).build();
-        when(servicesPersistencePort.findByCode("SRV-001")).thenReturn(Optional.of(entity));
+    void findByIdReturnsMappedDto() {
+        Services entity = Services.builder().id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
+        ServiceResourceDto dto = ServiceResourceDto.builder().id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
+        when(servicesPersistencePort.findById(ID_UUID)).thenReturn(Optional.of(entity));
         when(servicesMapper.toServiceResourceDto(entity)).thenReturn(dto);
 
-        assertThat(impl.findByCode("SRV-001")).isSameAs(dto);
+        assertThat(impl.findById(ID_UUID)).isSameAs(dto);
     }
 
     @Test
-    void findByCodeThrowsNotFoundWhenMissing() {
-        when(servicesPersistencePort.findByCode("MISSING")).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> impl.findByCode("MISSING"))
+    void findByIdThrowsNotFoundWhenMissing() {
+        when(servicesPersistencePort.findById("MISSING")).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> impl.findById("MISSING"))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessageContaining("MISSING");
     }
@@ -59,10 +59,10 @@ class ServiceServicePortImplTest {
         when(servicesPersistencePort.existsByCode("SRV-001")).thenReturn(false);
         when(servicesPersistencePort.existsByDescription("Checkup")).thenReturn(false);
         Services toPersist = Services.builder().code("SRV-001").description("Checkup").enabled(true).build();
-        Services persisted = Services.builder().id("1").code("SRV-001").description("Checkup").enabled(true).build();
+        Services persisted = Services.builder().id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
         when(servicesMapper.toServices(any())).thenReturn(toPersist);
         when(servicesPersistencePort.save(toPersist)).thenReturn(persisted);
-        ServiceResourceDto dto = ServiceResourceDto.builder().id("1").code("SRV-001").description("Checkup").enabled(true).build();
+        ServiceResourceDto dto = ServiceResourceDto.builder().id(ID_UUID).code("SRV-001").description("Checkup").enabled(true).build();
         when(servicesMapper.toServiceResourceDto(persisted)).thenReturn(dto);
 
         assertThat(impl.create(new CreateServiceRequest("  SRV-001  ", "  Checkup  "))).isSameAs(dto);
@@ -79,18 +79,18 @@ class ServiceServicePortImplTest {
     }
 
     @Test
-    void deleteByCodeThrowsNotFoundWhenMissing() {
-        when(servicesPersistencePort.findEnabledByCode("MISSING")).thenReturn(Optional.empty());
-        assertThatThrownBy(() -> impl.deleteByCode("MISSING"))
+    void deleteByIdThrowsNotFoundWhenMissing() {
+        when(servicesPersistencePort.findEnabledById("MISSING")).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> impl.deleteById("MISSING"))
                 .isInstanceOf(NotFoundException.class);
-        verify(servicesPersistencePort, never()).disableByCode(any());
+        verify(servicesPersistencePort, never()).disableById(any());
     }
 
     @Test
-    void deleteByCodeDisablesWhenPresent() {
-        when(servicesPersistencePort.findEnabledByCode("SRV-001")).thenReturn(Optional.of(
-                Services.builder().code("SRV-001").build()));
-        impl.deleteByCode("SRV-001");
-        verify(servicesPersistencePort, times(1)).disableByCode("SRV-001");
+    void deleteByIdDisablesWhenPresent() {
+        when(servicesPersistencePort.findEnabledById(ID_UUID)).thenReturn(Optional.of(
+                Services.builder().id(ID_UUID).code("SRV-001").build()));
+        impl.deleteById(ID_UUID);
+        verify(servicesPersistencePort, times(1)).disableById(ID_UUID);
     }
 }

@@ -49,7 +49,7 @@ public class DiagnosisPatientServiceImpl implements DiagnosisPatientServicePort 
         if (schemaResource != null) resource.setSchema(schemaResource.getId());
         DiagnosisResourceDto diagnosisResource = diagnosisPersistencePort.findByCode(entry.getDiagnosis());
         if (diagnosisResource != null) resource.setDiagnosis(diagnosisResource.getId());
-        ServiceResourceDto serviceResource = servicesPersistencePort.findResourceByCode(entry.getServices()).orElse(null);
+        ServiceResourceDto serviceResource = servicesPersistencePort.findResourceById(entry.getServices()).orElse(null);
         if (serviceResource != null) resource.setServices(serviceResource.getId());
         HospitalUnitResourceDto hospitalUnitResource = hospitalUnitPersistencePort.findByCode(entry.getHospitalUnit());
         if (hospitalUnitResource != null) resource.setHospitalUnit(hospitalUnitResource.getId());

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import owl.tree.rmfarma.service.application.service.CreateServiceUseCase;
 import owl.tree.rmfarma.service.application.service.DeleteServiceUseCase;
 import owl.tree.rmfarma.service.application.service.FindServiceUseCase;
-import owl.tree.rmfarma.service.application.service.GetServiceByCodeUseCase;
+import owl.tree.rmfarma.service.application.service.GetServiceByIdUseCase;
 import owl.tree.rmfarma.service.application.service.UpdateServiceUseCase;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
 import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
@@ -31,7 +31,7 @@ public class ServiceController {
     private final CreateServiceUseCase createServiceUseCase;
     private final UpdateServiceUseCase updateServiceUseCase;
     private final DeleteServiceUseCase deleteServiceUseCase;
-    private final GetServiceByCodeUseCase getServiceByCodeUseCase;
+    private final GetServiceByIdUseCase getServiceByIdUseCase;
 
     @GetMapping
     public ResponseEntity<List<ServiceResourceDto>> findAll() {
@@ -44,21 +44,21 @@ public class ServiceController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-    @PatchMapping("/{code}")
-    public ResponseEntity<ServiceResourceDto> update(@PathVariable String code,
+    @PatchMapping("/{id}")
+    public ResponseEntity<ServiceResourceDto> update(@PathVariable String id,
                                                      @Valid @RequestBody UpdateServiceRequest request) {
-        ServiceResourceDto updated = this.updateServiceUseCase.update(code, request);
+        ServiceResourceDto updated = this.updateServiceUseCase.update(id, request);
         return ResponseEntity.ok(updated);
     }
 
-    @DeleteMapping("/{code}")
-    public ResponseEntity<Void> delete(@PathVariable String code) {
-        this.deleteServiceUseCase.deleteByCode(code);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        this.deleteServiceUseCase.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{code}")
-    public ResponseEntity<ServiceResourceDto> findByCode(@PathVariable String code) {
-        return ResponseEntity.ok(this.getServiceByCodeUseCase.findByCode(code));
+    @GetMapping("/{id}")
+    public ResponseEntity<ServiceResourceDto> findById(@PathVariable String id) {
+        return ResponseEntity.ok(this.getServiceByIdUseCase.findById(id));
     }
 }

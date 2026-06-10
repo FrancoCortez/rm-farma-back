@@ -9,14 +9,14 @@ import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 
 @Component
 @RequiredArgsConstructor
-public class GetServiceByCodeUseCase {
+public class GetServiceByIdUseCase {
 
     private final ServicesPersistencePort servicesPersistencePort;
     private final ServicesMapper servicesMapper;
 
-    public ServiceResourceDto findByCode(String code) {
-        return servicesPersistencePort.findByCode(code)
+    public ServiceResourceDto findById(String id) {
+        return servicesPersistencePort.findById(id)
                 .map(servicesMapper::toServiceResourceDto)
-                .orElseThrow(() -> new NotFoundException("Service", code));
+                .orElseThrow(() -> new NotFoundException("Service", id));
     }
 }

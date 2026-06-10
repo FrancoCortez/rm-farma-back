@@ -19,19 +19,19 @@ public class ServicesPersistencePortAdapter implements ServicesPersistencePort {
     private final ServicesMapper servicesMapper;
 
     @Override
-    public Optional<Services> findByCode(String code) {
-        if (code == null || code.isBlank()) {
+    public Optional<Services> findById(String id) {
+        if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return this.servicesRepository.findByCodeAndEnabledTrue(code);
+        return this.servicesRepository.findById(id);
     }
 
     @Override
-    public Optional<ServiceResourceDto> findResourceByCode(String code) {
-        if (code == null || code.isBlank()) {
+    public Optional<ServiceResourceDto> findResourceById(String id) {
+        if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return this.servicesRepository.findByCodeAndEnabledTrue(code)
+        return this.servicesRepository.findById(id)
                 .map(this.servicesMapper::toServiceResourceDto);
     }
 
@@ -50,16 +50,17 @@ public class ServicesPersistencePortAdapter implements ServicesPersistencePort {
     }
 
     @Override
-    public Optional<Services> findEnabledByCode(String code) {
-        if (code == null || code.isBlank()) {
+    public Optional<Services> findEnabledById(String id) {
+        if (id == null || id.isBlank()) {
             return Optional.empty();
         }
-        return this.servicesRepository.findByCodeAndEnabledTrue(code);
+        return this.servicesRepository.findById(id)
+                .filter(entity -> Boolean.TRUE.equals(entity.getEnabled()));
     }
 
     @Override
-    public void disableByCode(String code) {
-        this.servicesRepository.findByCodeAndEnabledTrue(code)
+    public void disableById(String id) {
+        this.servicesRepository.findById(id)
                 .ifPresent(entity -> {
                     entity.setEnabled(false);
                     this.servicesRepository.save(entity);

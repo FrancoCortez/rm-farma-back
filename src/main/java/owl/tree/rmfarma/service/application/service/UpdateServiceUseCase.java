@@ -17,12 +17,12 @@ public class UpdateServiceUseCase {
     private final ServicesPersistencePort servicesPersistencePort;
     private final ServicesMapper servicesMapper;
 
-    public ServiceResourceDto update(String code, UpdateServiceRequest request) {
+    public ServiceResourceDto update(String id, UpdateServiceRequest request) {
         String trimmedCode = request.code() == null ? null : request.code().trim();
         String trimmedDescription = request.description() == null ? null : request.description().trim();
 
-        Services current = servicesPersistencePort.findByCode(code)
-                .orElseThrow(() -> new NotFoundException("Service", code));
+        Services current = servicesPersistencePort.findById(id)
+                .orElseThrow(() -> new NotFoundException("Service", id));
 
         if (trimmedCode != null && !trimmedCode.equals(current.getCode())
                 && servicesPersistencePort.existsByCodeAndIdNot(trimmedCode, current.getId())) {
