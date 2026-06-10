@@ -18,4 +18,12 @@ public interface ServicesPersistencePort {
     Optional<Services> findEnabledByCode(String code);
 
     void disableByCode(String code);
+
+    boolean existsByCode(String code);
+
+    boolean existsByDescription(String description);
+
+    boolean existsByCodeAndIdNot(String code, String id);
+
+    boolean existsByDescriptionAndIdNot(String description, String id);
 }

@@ -65,4 +65,24 @@ public class ServicesPersistencePortAdapter implements ServicesPersistencePort {
                     this.servicesRepository.save(entity);
                 });
     }
+
+    @Override
+    public boolean existsByCode(String code) {
+        return this.servicesRepository.existsByCode(code);
+    }
+
+    @Override
+    public boolean existsByDescription(String description) {
+        return this.servicesRepository.existsByDescription(description);
+    }
+
+    @Override
+    public boolean existsByCodeAndIdNot(String code, String id) {
+        return this.servicesRepository.existsByCodeAndIdNot(code, id);
+    }
+
+    @Override
+    public boolean existsByDescriptionAndIdNot(String description, String id) {
+        return this.servicesRepository.existsByDescriptionAndIdNot(description, id);
+    }
 }
