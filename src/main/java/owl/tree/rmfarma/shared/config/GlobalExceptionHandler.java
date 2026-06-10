@@ -3,12 +3,14 @@ package owl.tree.rmfarma.shared.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import owl.tree.rmfarma.shared.exception.base.BusinessException;
 import owl.tree.rmfarma.shared.exception.base.InfrastructureException;
 import owl.tree.rmfarma.shared.exception.data.ErrorResponse;
+import owl.tree.rmfarma.shared.exception.domain.ExistsException;
 import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 
 @RestControllerAdvice
@@ -41,5 +43,20 @@ public class GlobalExceptionHandler {
         ErrorResponse error = new ErrorResponse(HttpStatus.NOT_FOUND, "Resource not found", request.getDescription(false));
         error.addValidationError(ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ExistsException.class)
+    public ResponseEntity<Object> handleExistsException(ExistsException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.CONFLICT, "Resource already exists", request.getDescription(false));
+        error.addValidationError(ex.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> handleValidationException(MethodArgumentNotValidException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", request.getDescription(false));
+        ex.getBindingResult().getFieldErrors().forEach(fe ->
+                error.addValidationError(fe.getField() + ": " + fe.getDefaultMessage()));
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 }
