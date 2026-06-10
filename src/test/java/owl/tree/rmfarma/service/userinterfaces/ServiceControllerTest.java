@@ -22,13 +22,16 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import owl.tree.rmfarma.service.application.service.CreateServiceUseCase;
+import owl.tree.rmfarma.service.application.service.DeleteServiceUseCase;
 import owl.tree.rmfarma.service.application.service.FindServiceUseCase;
+import owl.tree.rmfarma.service.application.service.GetServiceByCodeUseCase;
 import owl.tree.rmfarma.service.application.service.UpdateServiceUseCase;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
 import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
 import owl.tree.rmfarma.service.domain.data.service.UpdateServiceRequest;
 import owl.tree.rmfarma.shared.config.GlobalExceptionHandler;
 import owl.tree.rmfarma.shared.exception.domain.ExistsException;
+import owl.tree.rmfarma.shared.exception.domain.NotFoundException;
 
 @ExtendWith(MockitoExtension.class)
 class ServiceControllerTest {
@@ -44,6 +47,12 @@ class ServiceControllerTest {
 
     @Mock
     private UpdateServiceUseCase updateServiceUseCase;
+
+    @Mock
+    private DeleteServiceUseCase deleteServiceUseCase;
+
+    @Mock
+    private GetServiceByCodeUseCase getServiceByCodeUseCase;
 
     @InjectMocks
     private ServiceController serviceController;
@@ -185,5 +194,44 @@ class ServiceControllerTest {
                         .content(body))
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
+    void deleteReturns204OnExisting() throws Exception {
+        org.mockito.Mockito.doNothing().when(deleteServiceUseCase).deleteByCode("SRV-001");
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete("/api/v1/services/SRV-001"))
+                .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void deleteReturns404WhenMissing() throws Exception {
+        org.mockito.Mockito.doThrow(new NotFoundException("Service", "MISSING"))
+                .when(deleteServiceUseCase).deleteByCode("MISSING");
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete("/api/v1/services/MISSING"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404));
+    }
+
+    @Test
+    void getByCodeReturns200WhenFound() throws Exception {
+        ServiceResourceDto dto = ServiceResourceDto.builder()
+                .id("uuid-1").code("SRV-001").description("Checkup").enabled(true).build();
+        when(getServiceByCodeUseCase.findByCode("SRV-001")).thenReturn(dto);
+
+        mockMvc.perform(get("/api/v1/services/SRV-001"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("SRV-001"));
+    }
+
+    @Test
+    void getByCodeReturns404WhenMissing() throws Exception {
+        when(getServiceByCodeUseCase.findByCode("MISSING"))
+                .thenThrow(new NotFoundException("Service", "MISSING"));
+
+        mockMvc.perform(get("/api/v1/services/MISSING"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.status").value(404));
     }
 }
