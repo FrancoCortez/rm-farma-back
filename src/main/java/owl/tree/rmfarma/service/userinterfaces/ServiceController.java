@@ -5,14 +5,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import owl.tree.rmfarma.service.application.service.CreateServiceUseCase;
 import owl.tree.rmfarma.service.application.service.FindServiceUseCase;
+import owl.tree.rmfarma.service.application.service.UpdateServiceUseCase;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
 import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
+import owl.tree.rmfarma.service.domain.data.service.UpdateServiceRequest;
 
 import java.util.List;
 
@@ -22,6 +26,7 @@ import java.util.List;
 public class ServiceController {
     private final FindServiceUseCase findServiceUseCase;
     private final CreateServiceUseCase createServiceUseCase;
+    private final UpdateServiceUseCase updateServiceUseCase;
 
     @GetMapping
     public ResponseEntity<List<ServiceResourceDto>> findAll() {
@@ -32,5 +37,12 @@ public class ServiceController {
     public ResponseEntity<ServiceResourceDto> create(@Valid @RequestBody CreateServiceRequest request) {
         ServiceResourceDto created = this.createServiceUseCase.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    }
+
+    @PatchMapping("/{code}")
+    public ResponseEntity<ServiceResourceDto> update(@PathVariable String code,
+                                                     @Valid @RequestBody UpdateServiceRequest request) {
+        ServiceResourceDto updated = this.updateServiceUseCase.update(code, request);
+        return ResponseEntity.ok(updated);
     }
 }

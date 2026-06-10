@@ -23,8 +23,10 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import owl.tree.rmfarma.service.application.service.CreateServiceUseCase;
 import owl.tree.rmfarma.service.application.service.FindServiceUseCase;
+import owl.tree.rmfarma.service.application.service.UpdateServiceUseCase;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
 import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
+import owl.tree.rmfarma.service.domain.data.service.UpdateServiceRequest;
 import owl.tree.rmfarma.shared.config.GlobalExceptionHandler;
 import owl.tree.rmfarma.shared.exception.domain.ExistsException;
 
@@ -39,6 +41,9 @@ class ServiceControllerTest {
 
     @Mock
     private CreateServiceUseCase createServiceUseCase;
+
+    @Mock
+    private UpdateServiceUseCase updateServiceUseCase;
 
     @InjectMocks
     private ServiceController serviceController;
@@ -135,5 +140,50 @@ class ServiceControllerTest {
                 .andExpect(jsonPath("$.error").value("Conflict"))
                 .andExpect(jsonPath("$.message").value("Resource already exists"))
                 .andExpect(jsonPath("$.errors").isArray());
+    }
+
+    @Test
+    void updateReturns200OnValidBody() throws Exception {
+        ServiceResourceDto dto = ServiceResourceDto.builder()
+                .id("uuid-1")
+                .code("SRV-001")
+                .description("Updated")
+                .enabled(true)
+                .build();
+        when(updateServiceUseCase.update(any(), any())).thenReturn(dto);
+
+        String body = objectMapper.writeValueAsString(new UpdateServiceRequest("SRV-001", "Updated"));
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch("/api/v1/services/SRV-001")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.code").value("SRV-001"))
+                .andExpect(jsonPath("$.description").value("Updated"));
+    }
+
+    @Test
+    void updateReturns409OnCrossRowDuplicate() throws Exception {
+        when(updateServiceUseCase.update(any(), any()))
+                .thenThrow(new ExistsException("description", "Service", "Taken"));
+
+        String body = objectMapper.writeValueAsString(new UpdateServiceRequest("SRV-001", "Taken"));
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch("/api/v1/services/SRV-001")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.status").value(409));
+    }
+
+    @Test
+    void updateReturns400OnBlankCode() throws Exception {
+        String body = objectMapper.writeValueAsString(new UpdateServiceRequest("", "Updated"));
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch("/api/v1/services/SRV-001")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
     }
 }
