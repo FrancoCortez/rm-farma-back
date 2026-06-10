@@ -1,0 +1,67 @@
+# OpenSpec configuration for rm-farma-back
+
+schema: 1
+
+context:
+  project: rm-farma-back
+  artifact_id: owl.tree.rmfarma:rm-farma
+  packaging: war
+  description: >
+    Backend pharmaceutical management service (Magistral Farma) built on
+    Spring Boot 3.4.1 + Java 21, hexagonal/clean architecture with strict
+    bounded contexts (country, doctor, domain, manufacture, patient, product,
+    service, shared). Persistence: Spring Data JPA + Hibernate 6 with
+    Envers auditing. Mapping: MapStruct. Boilerplate: Lombok.
+  java_version: "21"
+  build_tool: maven
+  spring_boot: "3.4.1"
+
+strict_tdd: true
+
+testing:
+  runner: maven-surefire
+  framework: junit5
+  available:
+    unit: true
+    integration: true
+    e2e: false
+    spring_boot_test: true
+    datajpatest: true
+    webmvctest: true
+    assertj: true
+    mockito: true
+    jacoco: false
+  command: mvn test
+  coverage_command: mvn -Pcoverage verify
+  notes: >
+    Only the auto-generated Spring Boot context-loads test is present and
+    currently commented out. No domain/integration tests exist yet. New work
+    is expected to land with specs first (RED -> GREEN -> REFACTOR).
+
+rules:
+  proposal:
+    require: true
+    max_lines: 250
+  spec:
+    require: true
+    format: requirements+scenarios
+  design:
+    require: true
+    architecture: hexagonal
+  tasks:
+    require: true
+    granularity: reviewable-unit
+  apply:
+    require: true
+    tdd: red-green-refactor
+  verify:
+    require: true
+    command: mvn verify
+  archive:
+    require: true
+
+ci:
+  build: mvn -B verify
+  test: mvn -B test
+  format: mvn -B spotless:apply
+  lint: mvn -B checkstyle:check
