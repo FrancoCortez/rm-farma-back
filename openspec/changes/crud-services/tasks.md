@@ -85,3 +85,39 @@ Chain strategy: pending
 - **`@WebMvcTest` slice hit the JPA auditing context-load failure** because `@EnableJpaAuditing` is on `RmFarmaBackApplication`. Resolution: switched the controller test to a standalone `MockMvc` setup (`MockMvcBuilders.standaloneSetup(...).setControllerAdvice(new GlobalExceptionHandler())`). The design 6.2's `@WebMvcTest` recipe would have failed in this codebase.
 - **No `ServiceServicePortImpl` (in-port) callers exist** in production. The in-port + impl were added per the design 3.3, but only the use case layer is consumed. The test for the impl duplicates the use case tests; both pass.
 - **74 lines of unrelated WIP files in the working tree** (doctor, domain, manufacture, product) were NOT committed — they are out of scope for `crud-services` and should be reviewed separately.
+- **Identifier corrected from `code` to `id` after apply (2026-06-09).** The proposal and design initially specified paths and use-case inputs as `code` (the business key). The front-end team confirmed they send UUIDs in CRUD operations, so write paths and the `GET /{id}` endpoint now use the entity's UUID `id` field. Renamed in this delta:
+  - `ServicesPersistencePort`: `findByCode` → `findById`, `findEnabledByCode` → `findEnabledById`, `disableByCode` → `disableById`, `findResourceByCode` → `findResourceById`.
+  - `ServiceServicePort`: `findByCode` → `findById`, `update(String code, …)` → `update(String id, …)`, `deleteByCode` → `deleteById`.
+  - Use cases: `GetServiceByCodeUseCase` → `GetServiceByIdUseCase`.
+  - Controller paths: `/{code}` → `/{id}` (PATCH, DELETE, GET).
+  - All affected tests renamed and updated to pass `id` values.
+  - The patient caller `DiagnosisPatientServiceImpl#createDiagnosisPatient` is updated to use `findResourceById` with the same null-on-miss behavior.
+  - `JpaRepository<Services, String>#findById(String)` is the primary lookup; no new repository method needed for the id-based paths.
+  - Landed as Task 5.2 (path-by-id refactor) on top of the existing 12 commits. See `openspec/changes/crud-services/tasks.md` Task 5.2 below.
+
+## Phase 5: Integration verification
+
+- [x] **5.1 Full `mvn -B verify`**. Run `mvn -B verify`; assert zero failures; leave `RmFarmaBackApplicationTests` uncommented (no — left commented per `openspec/config.yaml` notes, the new code is compatible with the commented state). Verify: `mvn -B verify` (72 tests run, 0 failures, 0 errors, 0 skipped, BUILD SUCCESS). Commit: chore commit `chore(services): green mvn verify with all CRUD tests`.
+
+- [x] **5.2 Path-by-id refactor (code → id)** (RED→GREEN). Decision: front-end sends UUIDs in CRUD operations, so all write-path and `GET /{id}` URLs use the entity `id` (UUID) instead of `code`. RED first: update each affected test to assert `id`-based behavior, watch the updated tests fail (or fail to compile) with the new signatures; then GREEN the production code to match.
+
+  Sub-tasks (each is RED→GREEN, may be combined into one commit if they all share the same test→prod boundary):
+
+  - **5.2.a** Rename `ServicesPersistencePort` methods: `findByCode` → `findById`, `findEnabledByCode` → `findEnabledById`, `disableByCode` → `disableById`, `findResourceByCode` → `findResourceById`. Update the SPI port and its adapter. `JpaRepository#findById(String)` is the default lookup; no extra derived method needed. Verify: `mvn -B test -Dtest=ServicesPersistencePortAdapterTest`.
+
+  - **5.2.b** Rename `ServiceServicePort` methods: `findByCode` → `findById`, `deleteByCode` → `deleteById`. Change `update(String code, UpdateServiceRequest)` → `update(String id, UpdateServiceRequest)`. Update `ServiceServicePortImpl` accordingly. Verify: `mvn -B test -Dtest=ServiceServicePortImplTest`.
+
+  - **5.2.c** Rename `GetServiceByCodeUseCase` → `GetServiceByIdUseCase`; input becomes `String id`; calls `port.findById(id)`. Rename test class and update assertions. Verify: `mvn -B test -Dtest=GetServiceByIdUseCaseTest`.
+
+  - **5.2.d** `UpdateServiceUseCase`: input is now `String id` (path); replace `port.findByCode(id)` → `port.findById(id)`; `NotFoundException("Service", id)` carries the id. Verify: `mvn -B test -Dtest=UpdateServiceUseCaseTest`.
+
+  - **5.2.e** `DeleteServiceUseCase`: input is now `String id`; replace `port.findEnabledByCode(id)` → `port.findEnabledById(id)`, `port.disableByCode(id)` → `port.disableById(id)`. Verify: `mvn -B test -Dtest=DeleteServiceUseCaseTest`.
+
+  - **5.2.f** `ServiceController`: change path variables from `/{code}` to `/{id}` on `@PatchMapping`, `@DeleteMapping`, `@GetMapping`. Update method signatures accordingly. Update `ServiceControllerTest` to use UUID path values and assert id-based behavior. Verify: `mvn -B test -Dtest=ServiceControllerTest`.
+
+  - **5.2.g** Update the patient caller `DiagnosisPatientServiceImpl#createDiagnosisPatient` to use `findResourceById` (port method renamed) with the same null-on-miss behavior. No new test (this caller is out of scope for the service BC; covered by the existing patient tests if any).
+
+  - **5.2.h** Final `mvn -B verify` from a clean state. Verify: `mvn -B verify` BUILD SUCCESS, all tests pass, 0 skipped. Commit: `refactor(service): CRUD paths use entity id (UUID) instead of code`.
+
+  Note: combine sub-tasks 5.2.a–5.2.h into a single commit because the rename touches the port, adapter, use cases, controller, and tests as a coherent unit. Strict TDD is preserved at the unit level: tests are updated first, watched to fail or fail-to-compile, then production code is updated to compile and pass.
+

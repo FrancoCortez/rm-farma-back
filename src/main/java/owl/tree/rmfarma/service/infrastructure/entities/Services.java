@@ -29,6 +29,10 @@ public class Services extends BaseEntity {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
+    @Column(name = "enabled", nullable = false)
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
+
     @OneToMany(mappedBy = "services")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
 

@@ -50,23 +50,23 @@ conditions are translated into the appropriate HTTP responses.
 - **When** Spring deserializes the body and bean validation runs on
   `CreateServiceRequest` (`@NotBlank` + `@Size`)
 - **Then** Spring raises `MethodArgumentNotValidException`
-- **And** the global exception handler returns `400 Bad Request` with
-  an `ErrorResponse` whose `errors` list contains the field-level
+- **And** the global exception handler returns `400 Bad Request` with an
+  `ErrorResponse` whose `errors` list contains the field-level
   violation messages; the use case is never invoked.
 
-### Requirement: Partial update of a service by code
+### Requirement: Partial update of a service by id
 
-`PATCH /api/v1/services/{code}` SHALL perform a partial update of the
-service identified by `{code}`, delegating to `UpdateServiceUseCase`.
-The use case loads the existing entity (throwing `NotFoundException` on
-miss), re-checks uniqueness of `code` and `description` **excluding the
-current entity's id**, applies the trimmed incoming values, and
-persists. Bean validation is enforced on the request DTO before the
-use case runs.
+`PATCH /api/v1/services/{id}` SHALL perform a partial update of the
+service identified by `{id}`, delegating to `UpdateServiceUseCase`.
+The use case loads the existing entity by id (throwing
+`NotFoundException` on miss), re-checks uniqueness of `code` and
+`description` **excluding the current entity's id**, applies the
+trimmed incoming values, and persists. Bean validation is enforced on
+the request DTO before the use case runs.
 
 #### Scenario: Update description on an existing service
 
-- **Given** a `PATCH /api/v1/services/SRV-001` request with body
+- **Given** a `PATCH /api/v1/services/00000000-0000-0000-0000-000000000001` request with body
   `{ "description": "  Updated description  " }`
 - **And** no other enabled `Services` row has the trimmed description
   `Updated description`
@@ -77,7 +77,7 @@ use case runs.
 
 #### Scenario: Update keeps the same code (self-exclusion)
 
-- **Given** a `PATCH /api/v1/services/SRV-001` request that re-sends
+- **Given** a `PATCH /api/v1/services/00000000-0000-0000-0000-000000000001` request that re-sends
   the entity's own `code` and `description` unchanged (after trim)
 - **When** the use case runs the uniqueness re-check
 - **Then** the re-check uses `existsByCodeAndIdNot(code, id)` and
@@ -87,7 +87,7 @@ use case runs.
 
 #### Scenario: Reject update when code is already used by another service
 
-- **Given** a `PATCH /api/v1/services/SRV-001` request whose trimmed
+- **Given** a `PATCH /api/v1/services/00000000-0000-0000-0000-000000000001` request whose trimmed
   `code` matches the `code` of a **different** existing `Services` row
 - **When** the use case runs the uniqueness re-check
 - **Then** the use case throws `ExistsException("code", "Service",
@@ -95,26 +95,26 @@ use case runs.
 - **And** the global exception handler returns `409 Conflict`; the
   original row is unchanged.
 
-#### Scenario: Reject update when service code does not exist
+#### Scenario: Reject update when service id does not exist
 
-- **Given** a `PATCH /api/v1/services/SRV-DOES-NOT-EXIST` request
+- **Given** a `PATCH /api/v1/services/00000000-0000-0000-0000-000000000099` request
 - **When** the use case tries to load the entity
 - **Then** the persistence port returns `Optional.empty()` and the use
-  case throws `NotFoundException("Service", "SRV-DOES-NOT-EXIST")`
+  case throws `NotFoundException("Service", "00000000-0000-0000-0000-000000000099")`
 - **And** the global exception handler returns `404 Not Found`.
 
 #### Scenario: Reject update when request body fails bean validation
 
-- **Given** a `PATCH /api/v1/services/SRV-001` request with a blank
+- **Given** a `PATCH /api/v1/services/00000000-0000-0000-0000-000000000001` request with a blank
   `code` or values that exceed the size limits
 - **When** Spring validates `UpdateServiceRequest`
 - **Then** `MethodArgumentNotValidException` is raised
 - **And** the global exception handler returns `400 Bad Request` with
   field-level violation messages in `errors`; the entity is unchanged.
 
-### Requirement: Soft delete of a service by code
+### Requirement: Soft delete of a service by id
 
-`DELETE /api/v1/services/{code}` SHALL soft-delete the service by
+`DELETE /api/v1/services/{id}` SHALL soft-delete the service by
 flipping its `enabled` flag to `false` and persisting the change. The
 endpoint SHALL NOT remove the row. A second delete on an already
 disabled service SHALL be reported as `404 Not Found` to keep the
@@ -122,41 +122,41 @@ contract idempotent and to avoid resurrecting/auditing a no-op.
 
 #### Scenario: Soft delete an existing enabled service
 
-- **Given** a service `SRV-001` exists with `enabled = true`
-- **When** `DELETE /api/v1/services/SRV-001` is processed by
+- **Given** a service `00000000-0000-0000-0000-000000000001` exists with `enabled = true`
+- **When** `DELETE /api/v1/services/00000000-0000-0000-0000-000000000001` is processed by
   `DeleteServiceUseCase`
 - **Then** the entity is loaded, `enabled` is set to `false`, and the
   entity is persisted
 - **And** the response is `204 No Content` (or `200 OK`); the row
   remains in the table.
 
-#### Scenario: Reject delete when service code does not exist
+#### Scenario: Reject delete when service id does not exist
 
-- **Given** no `Services` row has `code = "SRV-UNKNOWN"`
-- **When** `DELETE /api/v1/services/SRV-UNKNOWN` is processed
+- **Given** no `Services` row has `id = "00000000-0000-0000-0000-000000000099"`
+- **When** `DELETE /api/v1/services/00000000-0000-0000-0000-000000000099` is processed
 - **Then** `DeleteServiceUseCase` throws
-  `NotFoundException("Service", "SRV-UNKNOWN")`
+  `NotFoundException("Service", "00000000-0000-0000-0000-000000000099")`
 - **And** the global exception handler returns `404 Not Found`.
 
-### Requirement: Get a service by code
+### Requirement: Get a service by id
 
-`GET /api/v1/services/{code}` SHALL return the service resource for the
-given code. A miss MUST be translated into `404 Not Found` by the use
+`GET /api/v1/services/{id}` SHALL return the service resource for the
+given id. A miss MUST be translated into `404 Not Found` by the use
 case, not by the controller or the persistence adapter.
 
-#### Scenario: Return an existing service by code
+#### Scenario: Return an existing service by id
 
-- **Given** a service `SRV-001` exists and is enabled
-- **When** `GET /api/v1/services/SRV-001` is processed
-- **Then** `GetServiceByCodeUseCase` returns a `ServiceResourceDto`
+- **Given** a service `00000000-0000-0000-0000-000000000001` exists and is enabled
+- **When** `GET /api/v1/services/00000000-0000-0000-0000-000000000001` is processed
+- **Then** `GetServiceByIdUseCase` returns a `ServiceResourceDto`
 - **And** the response is `200 OK` with that DTO in the body.
 
-#### Scenario: Return 404 when the code does not exist
+#### Scenario: Return 404 when the id does not exist
 
-- **Given** no `Services` row has `code = "SRV-UNKNOWN"`
-- **When** `GET /api/v1/services/SRV-UNKNOWN` is processed
-- **Then** `GetServiceByCodeUseCase` throws
-  `NotFoundException("Service", "SRV-UNKNOWN")`
+- **Given** no `Services` row has `id = "00000000-0000-0000-0000-000000000099"`
+- **When** `GET /api/v1/services/00000000-0000-0000-0000-000000000099` is processed
+- **Then** `GetServiceByIdUseCase` throws
+  `NotFoundException("Service", "00000000-0000-0000-0000-000000000099")`
 - **And** the global exception handler returns `404 Not Found` with an
   `ErrorResponse` body.
 
@@ -192,29 +192,30 @@ derived query methods used by the use cases:
 - `boolean existsByDescriptionAndIdNot(String description, String id)`
 - `boolean existsByCodeAndIdNot(String code, String id)`
 
-The `ServicesPersistencePort.findByCode(String)` SPI contract SHALL be
-changed to return `Optional<Services>` instead of a nullable entity, so
-the use case layer (and only the use case layer) is responsible for
-translating "not present" into `NotFoundException`.
+The `ServicesPersistencePort.findById(String)` SPI contract SHALL return
+`Optional<Services>` instead of a nullable entity, so the use case
+layer (and only the use case layer) is responsible for translating
+"not present" into `NotFoundException`. `findById` is the canonical
+lookup for the write paths (PATCH, DELETE) and the new `GET` endpoint.
 
 #### Scenario: Repository methods are available and return expected results
 
-- **Given** a `Services` row with `code = "SRV-001"`,
-  `description = "Checkup"`, `enabled = true`
+- **Given** a `Services` row with `id = "00000000-0000-0000-0000-000000000001"`,
+  `code = "SRV-001"`, `description = "Checkup"`, `enabled = true`
 - **When** the new repository methods are invoked
 - **Then** `existsByCode("SRV-001")` returns `true` and
   `existsByCode("OTHER")` returns `false`
 - **And** `existsByDescription("Checkup")` returns `true` and
   `findByDescriptionAndEnabledTrue("Checkup")` returns `Optional`
   containing the row
-- **And** `existsByCodeAndIdNot("SRV-001", row.id)` returns `false`
+- **And** `existsByCodeAndIdNot("SRV-001", "00000000-0000-0000-0000-000000000001")` returns `false`
   (self excluded) while `existsByCodeAndIdNot("SRV-001", "other-id")`
   returns `true`.
 
-#### Scenario: findByCode returns Optional.empty on miss
+#### Scenario: findById returns Optional.empty on miss
 
-- **Given** no `Services` row with `code = "MISSING"`
-- **When** `ServicesPersistencePort.findByCode("MISSING")` is invoked
+- **Given** no `Services` row with `id = "00000000-0000-0000-0000-0000000000aa"`
+- **When** `ServicesPersistencePort.findById("00000000-0000-0000-0000-0000000000aa")` is invoked
 - **Then** it returns `Optional.empty()` (not `null`).
 
 ## ADDED Requirements
