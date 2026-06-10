@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
+import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
 import owl.tree.rmfarma.service.domain.data.service.UpdateServiceRequest;
 import owl.tree.rmfarma.service.infrastructure.entities.Services;
 
@@ -19,6 +20,20 @@ class ServicesMapperTest {
         assertThat(entity.getCode()).isEqualTo("SRV-001");
         assertThat(entity.getDescription()).isEqualTo("Checkup");
         assertThat(entity.getEnabled()).isTrue();
+    }
+
+    @Test
+    void toServiceResourceDtoPreservesEnabledFlag() {
+        Services entity = Services.builder()
+                .id("uuid-1")
+                .code("SRV-001")
+                .description("Checkup")
+                .enabled(false)
+                .build();
+
+        ServiceResourceDto dto = mapper.toServiceResourceDto(entity);
+
+        assertThat(dto.getEnabled()).isFalse();
     }
 
     @Test
