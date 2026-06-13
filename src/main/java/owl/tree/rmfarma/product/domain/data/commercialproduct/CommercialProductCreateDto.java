@@ -1,9 +1,6 @@
 package owl.tree.rmfarma.product.domain.data.commercialproduct;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder

@@ -6,7 +6,6 @@ import owl.tree.rmfarma.product.domain.data.commercialproduct.CommercialProductC
 import owl.tree.rmfarma.product.domain.data.commercialproduct.CommercialProductResourceDto;
 import owl.tree.rmfarma.product.domain.ports.spi.CommercialProductPersistencePort;
 import owl.tree.rmfarma.product.infrastructure.entities.CommercialProduct;
-import owl.tree.rmfarma.product.infrastructure.entities.Product;
 import owl.tree.rmfarma.product.infrastructure.mappers.CommercialProductMapper;
 import owl.tree.rmfarma.product.infrastructure.repository.CommercialProductRepository;
 

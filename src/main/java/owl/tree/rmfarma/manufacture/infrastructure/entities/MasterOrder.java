@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.envers.Audited;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import owl.tree.rmfarma.domain.infrastructure.entities.DocumentType;
-import owl.tree.rmfarma.domain.infrastructure.entities.Via;
 import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
 import owl.tree.rmfarma.shared.entities.BaseEntity;
 import owl.tree.rmfarma.shared.enumes.StateMachineEnum;

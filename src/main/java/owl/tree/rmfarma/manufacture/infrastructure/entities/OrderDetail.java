@@ -8,7 +8,6 @@ import owl.tree.rmfarma.domain.infrastructure.entities.Via;
 import owl.tree.rmfarma.product.infrastructure.entities.Complement;
 import owl.tree.rmfarma.product.infrastructure.entities.Product;
 import owl.tree.rmfarma.shared.entities.BaseEntity;
-import owl.tree.rmfarma.shared.enumes.StateMachineEnum;
 import owl.tree.rmfarma.shared.enumes.StateMachineOrderDetailsEnum;
 
 import java.time.OffsetDateTime;

@@ -16,8 +16,6 @@ import owl.tree.rmfarma.service.infrastructure.entities.Services;
 import owl.tree.rmfarma.service.infrastructure.mappers.ServicesMapper;
 import owl.tree.rmfarma.service.infrastructure.mappers.ServicesMapperImpl;
 
-import java.util.UUID;
-
 @Mapper(componentModel = "spring")
 public interface DiagnosisPatientMapper {
 

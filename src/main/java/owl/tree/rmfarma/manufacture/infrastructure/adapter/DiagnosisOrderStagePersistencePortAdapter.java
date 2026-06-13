@@ -9,8 +9,6 @@ import owl.tree.rmfarma.manufacture.infrastructure.entities.DiagnosisOrderStage;
 import owl.tree.rmfarma.manufacture.infrastructure.mappers.DiagnosisOrderStageMapper;
 import owl.tree.rmfarma.manufacture.infrastructure.repository.DiagnosisOrderStageRepository;
 
-import java.util.Optional;
-
 @Component
 @RequiredArgsConstructor
 public class DiagnosisOrderStagePersistencePortAdapter implements DiagnosisOrderStagePersistencePort {

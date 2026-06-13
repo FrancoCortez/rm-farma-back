@@ -1,7 +1,6 @@
 package owl.tree.rmfarma.manufacture.domain.data.masterorder;
 
 import lombok.*;
-import owl.tree.rmfarma.manufacture.application.masterorder.data.MasterOrderDetailsCreateResourceUseCaseDto;
 import owl.tree.rmfarma.shared.enumes.StateMachineEnum;
 
 import java.time.OffsetDateTime;

@@ -1,7 +1,9 @@
 package owl.tree.rmfarma.manufacture.domain.data.masterorderdetails;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;

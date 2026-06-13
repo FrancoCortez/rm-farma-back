@@ -3,8 +3,6 @@ package owl.tree.rmfarma.product.domain.services;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import owl.tree.rmfarma.domain.domain.data.schema.SchemaCreateDto;
-import owl.tree.rmfarma.domain.domain.data.schema.SchemaResourceDto;
 import owl.tree.rmfarma.product.domain.data.product.ProductCreateDto;
 import owl.tree.rmfarma.product.domain.data.product.ProductResourceDto;
 import owl.tree.rmfarma.product.domain.ports.api.ProductServicePort;

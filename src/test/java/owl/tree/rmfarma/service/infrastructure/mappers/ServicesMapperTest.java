@@ -1,13 +1,13 @@
 package owl.tree.rmfarma.service.infrastructure.mappers;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import owl.tree.rmfarma.service.domain.data.service.CreateServiceRequest;
 import owl.tree.rmfarma.service.domain.data.service.ServiceResourceDto;
 import owl.tree.rmfarma.service.domain.data.service.UpdateServiceRequest;
 import owl.tree.rmfarma.service.infrastructure.entities.Services;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class ServicesMapperTest {
 

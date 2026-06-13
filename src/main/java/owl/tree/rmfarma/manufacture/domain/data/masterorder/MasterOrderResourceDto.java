@@ -2,7 +2,6 @@ package owl.tree.rmfarma.manufacture.domain.data.masterorder;
 
 import lombok.*;
 import owl.tree.rmfarma.domain.domain.data.documentype.DocumentTypeResourceDto;
-import owl.tree.rmfarma.domain.domain.data.via.ViaResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.diagnosisorder.DiagnosisOrderStageResourceDto;
 import owl.tree.rmfarma.manufacture.domain.data.masterorderdetails.OrderDetailResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;

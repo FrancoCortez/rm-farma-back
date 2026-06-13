@@ -2,7 +2,6 @@ package owl.tree.rmfarma.product.infrastructure.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import owl.tree.rmfarma.domain.infrastructure.entities.Schema;
 import owl.tree.rmfarma.product.domain.data.product.ProductCreateDto;
 import owl.tree.rmfarma.product.domain.data.product.ProductResourceDto;
 import owl.tree.rmfarma.product.domain.ports.spi.ProductPersistencePort;

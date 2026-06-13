@@ -1,7 +1,6 @@
 package owl.tree.rmfarma.domain.domain.data.diagnosis;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data

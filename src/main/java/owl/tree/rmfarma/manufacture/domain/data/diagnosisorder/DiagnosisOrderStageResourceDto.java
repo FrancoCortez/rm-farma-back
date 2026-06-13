@@ -1,11 +1,8 @@
 package owl.tree.rmfarma.manufacture.domain.data.diagnosisorder;
 
-import jakarta.persistence.*;
 import lombok.*;
 import owl.tree.rmfarma.patient.domain.data.diagnosispatient.DiagnosisPatientResourceDto;
 import owl.tree.rmfarma.patient.domain.data.patient.PatientResourceDto;
-import owl.tree.rmfarma.patient.infrastructure.entities.DiagnosisPatient;
-import owl.tree.rmfarma.patient.infrastructure.entities.Patient;
 import owl.tree.rmfarma.shared.enumes.StateMachineEnum;
 
 import java.time.OffsetDateTime;
