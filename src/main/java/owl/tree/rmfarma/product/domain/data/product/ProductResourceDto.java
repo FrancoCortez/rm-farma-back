@@ -15,6 +15,7 @@ public class ProductResourceDto {
     private String id;
     private String code;
     private String description;
+    private Boolean enabled;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime createdDate;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

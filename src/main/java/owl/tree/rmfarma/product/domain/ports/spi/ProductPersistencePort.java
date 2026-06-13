@@ -8,5 +8,6 @@ import java.util.List;
 public interface ProductPersistencePort {
     List<ProductResourceDto> findAll();
     ProductResourceDto findByCode(String code);
+    ProductResourceDto findByCodeIncludingDisabled(String code);
     ProductResourceDto createProduct (ProductCreateDto dto);
 }

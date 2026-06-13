@@ -10,7 +10,9 @@ public interface CommercialProductPersistencePort {
 
     CommercialProductResourceDto findByCode(String code);
 
+    CommercialProductResourceDto findByCodeIncludingDisabled(String code);
+
     CommercialProductResourceDto createCommercialProduct(CommercialProductCreateDto dto);
 
-    List<CommercialProductResourceDto> findByProductId(String id);
+    List<CommercialProductResourceDto> findByProductCode(String code);
 }

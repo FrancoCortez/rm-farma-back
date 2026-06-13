@@ -8,5 +8,6 @@ import java.util.List;
 public interface SchemaPersistencePort {
     List<SchemaResourceDto> findAll();
     SchemaResourceDto findByCode(String schema);
+    SchemaResourceDto findByCodeIncludingDisabled(String code);
     SchemaResourceDto createSchema(SchemaCreateDto dto);
 }

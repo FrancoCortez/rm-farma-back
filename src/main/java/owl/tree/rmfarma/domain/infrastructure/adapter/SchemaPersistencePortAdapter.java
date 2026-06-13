@@ -19,7 +19,7 @@ public class SchemaPersistencePortAdapter implements SchemaPersistencePort {
     private final SchemaMapper schemaMapper;
 
     public List<SchemaResourceDto> findAll() {
-        return this.schemaRepository.findAll()
+        return this.schemaRepository.findAllByEnabledTrue()
                 .stream()
                 .sorted(Comparator.comparing(Schema::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(this.schemaMapper::toSchemaResourceDto)
@@ -27,6 +27,14 @@ public class SchemaPersistencePortAdapter implements SchemaPersistencePort {
     }
 
     public SchemaResourceDto findByCode(String code) {
+        if (code == null || code.isEmpty()) return null;
+        Schema schema = this.schemaRepository.findByCodeAndEnabledTrue(code).orElse(null);
+        if (schema == null) return null;
+        return this.schemaMapper.toSchemaResourceDto(schema);
+    }
+
+    @Override
+    public SchemaResourceDto findByCodeIncludingDisabled(String code) {
         if (code == null || code.isEmpty()) return null;
         Schema schema = this.schemaRepository.findByCode(code).orElse(null);
         if (schema == null) return null;

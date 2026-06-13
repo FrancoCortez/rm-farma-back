@@ -27,8 +27,8 @@ public class CommercialProductController {
         return ResponseEntity.ok(this.createCommercialProductUseCase.createCommercialProduct(dto));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<CommercialProductResourceDto>> findByProduct (@PathVariable String id) {
-        return ResponseEntity.ok(this.findCommercialProductUseCase.findByProductId(id));
+    @GetMapping("/{code}")
+    public ResponseEntity<List<CommercialProductResourceDto>> findByProduct (@PathVariable String code) {
+        return ResponseEntity.ok(this.findCommercialProductUseCase.findByProductCode(code));
     }
 }

@@ -11,7 +11,7 @@ public interface OrderDetailServicePort {
 
     OrderDetailResourceDto updateOrderDetail(OrderDetailUpdateFormResourceDto body);
 
-    OrderDetailResourceDto createOrderDetail (MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto, String masterOrderId);
+    List<OrderDetailResourceDto> createOrderDetail (MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto, String masterOrderId, int quantity);
 
     List<ResumeReportDto> getResumeReport(OffsetDateTime startDate, OffsetDateTime endDate);
 

@@ -11,4 +11,5 @@ public class DocumentTypeResourceDto {
     private String id;
     private String code;
     private String description;
+    private Boolean enabled;
 }

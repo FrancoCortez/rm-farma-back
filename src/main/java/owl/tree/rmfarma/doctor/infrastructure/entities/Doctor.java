@@ -20,7 +20,9 @@ import java.util.Set;
 @Builder
 @Table(indexes = {
         @Index(name = "idx_doctor_rut", columnList = "rut"),
-        @Index(name = "idx_doctor_code", columnList = "code")
+        @Index(name = "idx_doctor_code", columnList = "code"),
+        @Index(name = "idx_doctor_enabled_rut", columnList = "enabled,rut"),
+        @Index(name = "idx_doctor_enabled_code", columnList = "enabled,code")
 })
 public class Doctor extends BaseEntity {
 
@@ -34,7 +36,11 @@ public class Doctor extends BaseEntity {
     private String rut;
     @Column(name = "name", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "enabled", nullable = false)
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
+
     @OneToMany(mappedBy = "doctor")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();
-
 }

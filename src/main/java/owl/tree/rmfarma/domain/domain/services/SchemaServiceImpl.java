@@ -20,7 +20,7 @@ public class SchemaServiceImpl implements SchemaServicePort {
     }
 
     public SchemaResourceDto createSchema (SchemaCreateDto dto) {
-        SchemaResourceDto getByCode = this.schemaPersistencePort.findByCode(dto.getCode());
+        SchemaResourceDto getByCode = this.schemaPersistencePort.findByCodeIncludingDisabled(dto.getCode());
         if(getByCode != null) {
             throw new ExistsException(getByCode.getDescription(), "Esquema", getByCode.getCode());
         }

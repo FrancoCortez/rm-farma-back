@@ -29,6 +29,10 @@ public class Complement extends BaseEntity {
     @Column(name = "description", nullable = false, length = 100)
     private String description;
 
+    @Column(name = "enabled", nullable = false)
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
+
     @OneToMany(mappedBy = "complement")
     private Set<OrderDetail> orderDetails = new LinkedHashSet<>();
 

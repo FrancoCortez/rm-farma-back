@@ -25,10 +25,14 @@ public class Diagnosis extends BaseEntity {
     private String id;
     @Column(name = "code", nullable = false, unique = true, length = 50)
     private String code;
-    @Column(name = "description", nullable = false, length = 300)
+    @Column(name = "description", nullable = false, unique = true, length = 300)
     private String description;
     @Column(name = "grp_group", length = 30)
     private String grpGroup;
+
+    @Column(name = "enabled", nullable = false)
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
 
     @OneToMany(mappedBy = "diagnosis")
     private Set<DiagnosisPatient> diagnosisPatients = new LinkedHashSet<>();

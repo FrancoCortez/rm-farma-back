@@ -4,9 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import owl.tree.rmfarma.doctor.application.doctor.CreateDoctorUseCase;
+import owl.tree.rmfarma.doctor.application.doctor.DeleteDoctorUseCase;
 import owl.tree.rmfarma.doctor.application.doctor.FindDoctorUseCase;
+import owl.tree.rmfarma.doctor.application.doctor.UpdateDoctorUseCase;
 import owl.tree.rmfarma.doctor.domain.data.doctor.DoctorCreateResourceDto;
 import owl.tree.rmfarma.doctor.domain.data.doctor.DoctorResourceDto;
+import owl.tree.rmfarma.doctor.domain.data.doctor.DoctorUpdateResourceDto;
 
 import java.util.List;
 
@@ -16,6 +19,8 @@ import java.util.List;
 public class DoctorController {
     private final FindDoctorUseCase findDoctorUserCase;
     private final CreateDoctorUseCase createDoctorUseCase;
+    private final UpdateDoctorUseCase updateDoctorUseCase;
+    private final DeleteDoctorUseCase deleteDoctorUseCase;
 
     @GetMapping
     public ResponseEntity<List<DoctorResourceDto>> findAll() {
@@ -30,5 +35,15 @@ public class DoctorController {
     @PostMapping
     public ResponseEntity<DoctorResourceDto> create(@RequestBody DoctorCreateResourceDto create) {
         return ResponseEntity.ok(this.createDoctorUseCase.create(create));
+    }
+
+    @PatchMapping("{id}")
+    public ResponseEntity<DoctorResourceDto> update(@PathVariable String id, @RequestBody DoctorUpdateResourceDto update) {
+        return ResponseEntity.ok(this.updateDoctorUseCase.update(id, update));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<DoctorResourceDto> delete(@PathVariable String id) {
+        return ResponseEntity.ok(this.deleteDoctorUseCase.delete(id));
     }
 }

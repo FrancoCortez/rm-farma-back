@@ -21,7 +21,7 @@ public class CommercialProductPersistencePortAdapter implements CommercialProduc
 
     @Override
     public List<CommercialProductResourceDto> findAll() {
-        return this.commercialProductRepository.findAll()
+        return this.commercialProductRepository.findAllByEnabledTrue()
                 .stream()
                 .sorted(Comparator.comparing(CommercialProduct::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(this.commercialProductMapper::toCommercialProductResourceDto)
@@ -30,6 +30,13 @@ public class CommercialProductPersistencePortAdapter implements CommercialProduc
 
     @Override
     public CommercialProductResourceDto findByCode(String code) {
+        CommercialProduct entity = this.commercialProductRepository.findByCodeAndEnabledTrue(code).orElse(null);
+        if (entity == null) return null;
+        return this.commercialProductMapper.toCommercialProductResourceDto(entity);
+    }
+
+    @Override
+    public CommercialProductResourceDto findByCodeIncludingDisabled(String code) {
         CommercialProduct entity = this.commercialProductRepository.findByCode(code).orElse(null);
         if (entity == null) return null;
         return this.commercialProductMapper.toCommercialProductResourceDto(entity);
@@ -41,8 +48,8 @@ public class CommercialProductPersistencePortAdapter implements CommercialProduc
     }
 
     @Override
-    public List<CommercialProductResourceDto> findByProductId(String id) {
-        return this.commercialProductRepository.findByProductCode(id)
+    public List<CommercialProductResourceDto> findByProductCode(String code) {
+        return this.commercialProductRepository.findByProductCodeAndEnabledTrue(code)
                 .stream()
                 .sorted(Comparator.comparing(CommercialProduct::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(this.commercialProductMapper::toCommercialProductResourceDto)

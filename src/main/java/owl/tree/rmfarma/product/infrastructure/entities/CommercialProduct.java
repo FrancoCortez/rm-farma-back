@@ -36,6 +36,10 @@ public class CommercialProduct  extends BaseEntity {
     @Column(name = "default_concentration", length = 30)
     private String defaultConcentration;
 
+    @Column(name = "enabled", nullable = false)
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
+
     @OneToMany(mappedBy = "commercialProduct")
     private Set<CommercialOrderDetail> commercialOrderDetails = new LinkedHashSet<>();
 

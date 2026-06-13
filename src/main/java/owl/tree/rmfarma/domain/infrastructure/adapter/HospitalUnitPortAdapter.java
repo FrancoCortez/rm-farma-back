@@ -18,7 +18,7 @@ public class HospitalUnitPortAdapter implements HospitalUnitPersistencePort {
 
     @Override
     public List<HospitalUnitResourceDto> findAll() {
-        return this.hospitalUnitRepository.findAll()
+        return this.hospitalUnitRepository.findAllByEnabledTrue()
                 .stream()
                 .map(this.hospitalUnitMapper::toHospitalUnitResourceDto)
                 .toList();
@@ -27,7 +27,7 @@ public class HospitalUnitPortAdapter implements HospitalUnitPersistencePort {
     @Override
     public HospitalUnitResourceDto findByCode(String code) {
         if (code == null || code.isEmpty()) return null;
-        HospitalUnit hospitalUnit = this.hospitalUnitRepository.findByCode(code).orElse(null);
+        HospitalUnit hospitalUnit = this.hospitalUnitRepository.findByCodeAndEnabledTrue(code).orElse(null);
         if (hospitalUnit == null) return null;
         return this.hospitalUnitMapper.toHospitalUnitResourceDto(hospitalUnit);
     }

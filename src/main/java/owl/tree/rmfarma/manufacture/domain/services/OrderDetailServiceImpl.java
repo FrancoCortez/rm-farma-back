@@ -131,9 +131,14 @@ public class OrderDetailServiceImpl implements OrderDetailServicePort {
         this.commercialOrderDetailPersistencePort.save(commercialOrderDetail);
     }
 
-    public OrderDetailResourceDto createOrderDetail (MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto, String masterOrderId) {
-        OrderDetailCreateResourceDto body = this.generateOrderDetail(masterOrderCreateResourceUseCaseDto, masterOrderId, this.generateID(LocalDate.now().getYear()));
-        return this.orderDetailPersistencePort.create(body);
+    public List<OrderDetailResourceDto> createOrderDetail (MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto, String masterOrderId, int quantity) {
+        List<OrderDetailResourceDto> created = new java.util.ArrayList<>(quantity);
+        int safeQuantity = Math.max(quantity, 1);
+        for (int i = 0; i < safeQuantity; i++) {
+            OrderDetailCreateResourceDto body = this.generateOrderDetail(masterOrderCreateResourceUseCaseDto, masterOrderId, this.generateID(LocalDate.now().getYear()));
+            created.add(this.orderDetailPersistencePort.create(body));
+        }
+        return created;
     }
 
 

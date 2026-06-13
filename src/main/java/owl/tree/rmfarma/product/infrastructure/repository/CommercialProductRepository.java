@@ -11,4 +11,10 @@ import java.util.Optional;
 public interface CommercialProductRepository extends JpaRepository<CommercialProduct, String> {
     Optional<CommercialProduct> findByCode(String code);
     List<CommercialProduct> findByProductCode(String code);
+
+    List<CommercialProduct> findAllByEnabledTrue();
+
+    Optional<CommercialProduct> findByCodeAndEnabledTrue(String code);
+
+    List<CommercialProduct> findByProductCodeAndEnabledTrue(String code);
 }

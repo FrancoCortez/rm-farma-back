@@ -17,7 +17,7 @@ public class ViaPersistencePortAdapter implements ViaPersistencePort {
     private final ViaMapper viaMapper;
 
     public List<ViaResourceDto> findAll() {
-        return this.viaRepository.findAll()
+        return this.viaRepository.findAllByEnabledTrue()
                 .stream()
                 .map(this.viaMapper::toViaResourceDto)
                 .toList();
@@ -25,7 +25,7 @@ public class ViaPersistencePortAdapter implements ViaPersistencePort {
 
     @Override
     public ViaResourceDto findByCode(String code) {
-        Via via = this.viaRepository.findByCode(code).orElse(null);
+        Via via = this.viaRepository.findByCodeAndEnabledTrue(code).orElse(null);
         if (via == null) return null;
         return this.viaMapper.toViaResourceDto(via);
     }

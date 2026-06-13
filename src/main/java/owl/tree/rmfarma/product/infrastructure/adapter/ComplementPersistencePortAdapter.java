@@ -19,7 +19,7 @@ public class ComplementPersistencePortAdapter implements ComplementPersistencePo
 
     @Override
     public List<ComplementResourceDto> findAll() {
-        return this.complementRepository.findAll()
+        return this.complementRepository.findAllByEnabledTrue()
                 .stream()
                 .map(this.complementMapper::toComplementResourceDto)
                 .toList();
@@ -27,7 +27,7 @@ public class ComplementPersistencePortAdapter implements ComplementPersistencePo
 
     @Override
     public ComplementResourceDto findByCode(String complementCode) {
-        Complement complement = this.complementRepository.findByCode(complementCode).orElse(null);
+        Complement complement = this.complementRepository.findByCodeAndEnabledTrue(complementCode).orElse(null);
         if (complement == null) return null;
         return this.complementMapper.toComplementResourceDto(complement);
     }

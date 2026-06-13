@@ -25,7 +25,7 @@ public class ProductServiceImpl implements ProductServicePort {
 
 
     public ProductResourceDto createProduct (ProductCreateDto dto) {
-        ProductResourceDto getByCode = this.productPersistencePort.findByCode(dto.getCode());
+        ProductResourceDto getByCode = this.productPersistencePort.findByCodeIncludingDisabled(dto.getCode());
         if(getByCode != null) {
             throw new ExistsException(getByCode.getDescription(), "PA", getByCode.getCode());
         }

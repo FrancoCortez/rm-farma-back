@@ -10,5 +10,5 @@ public interface CommercialProductServicePort {
 
     CommercialProductResourceDto createCommercialProduct(CommercialProductCreateDto dto);
 
-    List<CommercialProductResourceDto> findByProductId(String id);
+    List<CommercialProductResourceDto> findByProductCode(String code);
 }

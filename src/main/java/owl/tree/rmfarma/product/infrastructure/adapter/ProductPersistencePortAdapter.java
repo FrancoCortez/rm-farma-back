@@ -21,7 +21,7 @@ public class ProductPersistencePortAdapter implements ProductPersistencePort {
     private final ProductMapper productMapper;
 
     public List<ProductResourceDto> findAll() {
-        return this.productRepository.findAll()
+        return this.productRepository.findAllByEnabledTrue()
                 .stream()
                 .sorted(Comparator.comparing(Product::getCreatedDate, Comparator.nullsLast(Comparator.reverseOrder())))
                 .map(productMapper::toProductResourceDto)
@@ -29,6 +29,13 @@ public class ProductPersistencePortAdapter implements ProductPersistencePort {
     }
 
     public ProductResourceDto findByCode(String code) {
+        Product product = this.productRepository.findByCodeAndEnabledTrue(code).orElse(null);
+        if (product == null) return null;
+        return this.productMapper.toProductResourceDto(product);
+    }
+
+    @Override
+    public ProductResourceDto findByCodeIncludingDisabled(String code) {
         Product product = this.productRepository.findByCode(code).orElse(null);
         if (product == null) return null;
         return this.productMapper.toProductResourceDto(product);

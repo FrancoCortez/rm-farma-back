@@ -27,6 +27,11 @@ public class Product extends BaseEntity {
     private String code;
     @Column(name = "description", nullable = false, length = 100)
     private String description;
+
+    @Column(name = "enabled", nullable = false)
+    @Builder.Default
+    private Boolean enabled = Boolean.TRUE;
+
 //    @Column(name = "laboratory", nullable = false, length = 50)
 //    private String laboratory;
 

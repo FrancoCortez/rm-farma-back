@@ -48,10 +48,13 @@ public class MasterOrderServiceImpl implements MasterOrderServicePort {
     @Transactional
     public MasterOrderResourceDto create(MasterOrderCreateResourceUseCaseDto masterOrderCreateResourceUseCaseDto) {
         MasterOrderResourceDto resourceDto = this.masterOrderPersistencePort.findById(masterOrderCreateResourceUseCaseDto.getMaster());
-        OrderDetailResourceDto responseOrderDetail = this.orderDetailServicePort.createOrderDetail(masterOrderCreateResourceUseCaseDto, resourceDto.getId());
-        if (masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart() != null && !masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().isEmpty()) {
-            masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().forEach(commercialAdd -> this.generateCommercialDetail(responseOrderDetail, commercialAdd));
-        }
+        int quantity = masterOrderCreateResourceUseCaseDto.getQuantity() == null ? 1 : masterOrderCreateResourceUseCaseDto.getQuantity();
+        List<OrderDetailResourceDto> responseOrderDetails = this.orderDetailServicePort.createOrderDetail(masterOrderCreateResourceUseCaseDto, resourceDto.getId(), quantity);
+        responseOrderDetails.forEach(detail -> {
+            if (masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart() != null && !masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().isEmpty()) {
+                masterOrderCreateResourceUseCaseDto.getDetails().getCommercialPart().forEach(commercialAdd -> this.generateCommercialDetail(detail, commercialAdd));
+            }
+        });
         return resourceDto;
     }
 

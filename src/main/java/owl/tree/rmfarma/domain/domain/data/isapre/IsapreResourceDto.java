@@ -11,4 +11,5 @@ public class IsapreResourceDto {
     private String id;
     private Integer code;
     private String description;
+    private Boolean enabled;
 }

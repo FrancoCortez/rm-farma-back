@@ -11,4 +11,5 @@ public class HospitalUnitResourceDto {
     private String id;
     private String code;
     private String description;
+    private Boolean enabled;
 }

@@ -15,4 +15,8 @@ public class FindDiagnosisUseCase {
     public List<DiagnosisResourceDto> findAll() {
         return this.diagnosisServicePort.findAll();
     }
+
+    public DiagnosisResourceDto findById(String id) {
+        return this.diagnosisServicePort.findById(id);
+    }
 }

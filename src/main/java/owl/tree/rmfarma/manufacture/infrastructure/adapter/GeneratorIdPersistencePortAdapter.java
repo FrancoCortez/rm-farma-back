@@ -17,6 +17,8 @@ public class GeneratorIdPersistencePortAdapter implements GeneratorIdPersistence
 
 
     public GeneratorIdResourceDto generateId(Integer year) {
+        // TODO concurrencia: bajo carga paralela los RM pueden colisionar (read-then-write sin lock).
+        //      Resolver en una iteracion futura con SELECT ... FOR UPDATE o reserva de rango.
         GeneratorIdResourceDto generateId = this.generatorIdMapper.toGenerateIdResourceDto(this.generatorIdRepository.findTopByYearOrderByCorrelativeDesc(year).orElse(null));
         GeneratorIdResourceDto result = new GeneratorIdResourceDto();
         if (generateId == null) {

@@ -27,4 +27,5 @@ public class CommercialProductResourceDto {
     private LocalDateTime lastModifiedDate;
     private List<CommercialProductFactorResourceDto> factors;
     private ProductResourceDto product;
+    private Boolean enabled;
 }

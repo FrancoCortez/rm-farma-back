@@ -28,7 +28,7 @@ public class CommercialProductServiceImpl implements CommercialProductServicePor
 
     @Override
     public CommercialProductResourceDto createCommercialProduct(CommercialProductCreateDto dto) {
-        CommercialProductResourceDto commercialProductResourceDto = this.commercialProductPersistencePort.findByCode(dto.getCode());
+        CommercialProductResourceDto commercialProductResourceDto = this.commercialProductPersistencePort.findByCodeIncludingDisabled(dto.getCode());
         if(commercialProductResourceDto != null) {
             throw new ExistsException(commercialProductResourceDto.getDescription(), "Forma Comercial", commercialProductResourceDto.getCode());
         }
@@ -41,7 +41,7 @@ public class CommercialProductServiceImpl implements CommercialProductServicePor
     }
 
     @Override
-    public List<CommercialProductResourceDto> findByProductId(String id) {
-        return this.commercialProductPersistencePort.findByProductId(id);
+    public List<CommercialProductResourceDto> findByProductCode(String code) {
+        return this.commercialProductPersistencePort.findByProductCode(code);
     }
 }

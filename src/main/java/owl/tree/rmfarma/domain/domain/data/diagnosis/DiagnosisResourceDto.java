@@ -12,4 +12,5 @@ public class DiagnosisResourceDto {
     private String code;
     private String description;
     private String grpGroup;
+    private Boolean enabled;
 }

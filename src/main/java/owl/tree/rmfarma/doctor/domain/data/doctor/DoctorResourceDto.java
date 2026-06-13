@@ -12,4 +12,5 @@ public class DoctorResourceDto {
     private String rut;
     private String name;
     private Integer code;
+    private Boolean enabled;
 }

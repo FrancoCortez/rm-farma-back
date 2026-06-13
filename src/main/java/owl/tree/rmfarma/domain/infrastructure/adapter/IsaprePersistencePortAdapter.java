@@ -18,7 +18,7 @@ public class IsaprePersistencePortAdapter implements IsaprePersistencePort {
     private final IsapreMapper isapreMapper;
 
     public List<IsapreResourceDto> findAll() {
-        return this.isapreRepository.findAll()
+        return this.isapreRepository.findAllByEnabledTrue()
                 .stream()
                 .map(this.isapreMapper::toIsapreResourceDto)
                 .toList();
@@ -27,7 +27,7 @@ public class IsaprePersistencePortAdapter implements IsaprePersistencePort {
     @Override
     public IsapreResourceDto findByCode(Integer code) {
         if (code == null) return null;
-        Isapre isapre = this.isapreRepository.findByCode(code).orElse(null);
+        Isapre isapre = this.isapreRepository.findByCodeAndEnabledTrue(code).orElse(null);
         if (isapre == null) return null;
         return this.isapreMapper.toIsapreResourceDto(isapre);
     }

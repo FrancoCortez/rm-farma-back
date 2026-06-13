@@ -17,7 +17,7 @@ public class DocumentTypePersistencePortAdapter implements DocumentTypePersisten
     private final DocumentTypeMapper documentTypeMapper;
 
     public List<DocumentTypeResourceDto> findAll() {
-        return this.documentTypeRepository.findAll()
+        return this.documentTypeRepository.findAllByEnabledTrue()
                 .stream()
                 .map(this.documentTypeMapper::toDocumentTypeResourceDto)
                 .toList();
