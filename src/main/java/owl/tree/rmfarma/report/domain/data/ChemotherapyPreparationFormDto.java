@@ -1,4 +1,4 @@
-package owl.tree.rmfarma.manufacture.domain.data.masterorderdetails;
+package owl.tree.rmfarma.report.domain.data;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,11 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientHistoryReportDto {
+public class ChemotherapyPreparationFormDto {
     private Timestamp productionDate;
     private String masterRecord;
     private String fullPatientName;
@@ -42,8 +43,6 @@ public class PatientHistoryReportDto {
     private String qfPrepare;
     private String technicalPrepare;
     private String qfConditioningTechnician;
-    private String episode;
-    private String observationNurse;
 
     @JsonGetter("productionDate")
     public OffsetDateTime getProductionDateAsOffset() {
@@ -72,5 +71,4 @@ public class PatientHistoryReportDto {
                 ? expirationAdministrationDate.toLocalDateTime().atOffset(ZoneOffset.UTC)
                 : null;
     }
-
 }

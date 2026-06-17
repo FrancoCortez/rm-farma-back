@@ -1,5 +1,6 @@
 package owl.tree.rmfarma.manufacture.infrastructure.mappers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.springframework.beans.BeanUtils;
 import owl.tree.rmfarma.manufacture.domain.data.commercialorderdetail.CommercialOrderDetailCreateResourceDto;
